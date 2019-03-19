@@ -1,5 +1,6 @@
 // Copyright 2015-2019 Mail.Ru Group. All Rights Reserved.
 
+using System.IO;
 using UnrealBuildTool;
 
 public class AppCenter : ModuleRules
@@ -49,5 +50,11 @@ public class AppCenter : ModuleRules
 				// ... add any modules that your module loads dynamically here ...
 			}
             );
+
+        if (Target.Platform == UnrealTargetPlatform.Android)
+        {
+            string PluginPath = Utils.MakePathRelativeTo(ModuleDirectory, Target.RelativeEnginePath);
+            AdditionalPropertiesForReceipt.Add("AndroidPlugin", Path.Combine(PluginPath, "AppCenter_UPL_Android.xml"));
+        }
     }
 }
