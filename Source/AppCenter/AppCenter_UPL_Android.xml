@@ -9,6 +9,7 @@
     <setBoolFromProperty result="bEnablePush" ini="Engine" section="/Script/AppCenter.AppCenterSettings" property="bEnablePush" default="false"/>
     <setStringFromProperty result="AppSecret" ini="Engine" section="/Script/AppCenter.AppCenterSettings" property="AppSecret" default=""/>
     <setStringFromProperty result="SdkVersion" ini="Engine" section="/Script/AppCenter.AppCenterSettings" property="SdkVersion" default="1.11.4"/>
+    <setBoolFromProperty result="bDebug" ini="Engine" section="/Script/AppCenter.AppCenterSettings" property="bDebug" default="true"/>
   </init>
 
   <androidManifestUpdates>
@@ -109,31 +110,38 @@
   </gameActivityClassAdditions>
 
   <gameActivityOnCreateAdditions>
+    <if condition="bDebug">
+      <true>
+        <insert>
+          AppCenter.setLogLevel(2);
+        </insert>
+      </true>
+    </if>
     <if condition="bEnableAnalytics">
       <true>
         <insert>
-          AppCenter.start(getApplication(), </insert><insertValue value="&quot;$S(AppSecret)&quot;" /><insert>, Analytics.class);
+          AppCenter.start(getApplication(), </insert><insertValue value="&quot;$S(AppSecret)&quot;" /><insert>, Analytics.class, Crashes.class);
         </insert>
       </true>
     </if>
     <if condition="bEnableCrashes">
       <true>
         <insert>
-          AppCenter.start(getApplication(), </insert><insertValue value="&quot;$S(AppSecret)&quot;" /><insert>, Crashes.class);
+         // AppCenter.start(getApplication(), </insert><insertValue value="&quot;$S(AppSecret)&quot;" /><insert>, Crashes.class);
         </insert>
       </true>
     </if>
     <if condition="bEnableDistribute">
       <true>
         <insert>
-          AppCenter.start(getApplication(), </insert><insertValue value="&quot;$S(AppSecret)&quot;" /><insert>, Distribute.class);
+          //AppCenter.start(getApplication(), </insert><insertValue value="&quot;$S(AppSecret)&quot;" /><insert>, Distribute.class);
         </insert>
       </true>
     </if>
     <if condition="bEnablePush">
       <true>
         <insert>
-          AppCenter.start(getApplication(), </insert><insertValue value="&quot;$S(AppSecret)&quot;" /><insert>, Push.class);
+          //AppCenter.start(getApplication(), </insert><insertValue value="&quot;$S(AppSecret)&quot;" /><insert>, Push.class);
         </insert>
       </true>
     </if>
