@@ -53,6 +53,8 @@ public class AppCenter : ModuleRules
 
         if (Target.Platform == UnrealTargetPlatform.Android)
         {
+            PublicDependencyModuleNames.AddRange(new string[] { "Launch" });
+
             string PluginPath = Utils.MakePathRelativeTo(ModuleDirectory, Target.RelativeEnginePath);
             AdditionalPropertiesForReceipt.Add("AndroidPlugin", Path.Combine(PluginPath, "AppCenter_UPL_Android.xml"));
         }

@@ -96,10 +96,13 @@
   </gameActivityImportAdditions>
 
   <gameActivityClassAdditions>
-    <if condition="bEnableDistribute">
+    <if condition="bEnableCrashes">
       <true>
         <insert>
-         
+          public void AndroidThunkJava_TestCrash()
+          {
+            Crashes.generateTestCrash();
+          }
         </insert>
       </true>
     </if>
