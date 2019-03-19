@@ -16,5 +16,5 @@ void FAppCenterModule::ShutdownModule()
 }
 
 #undef LOCTEXT_NAMESPACE
-	
+
 IMPLEMENT_MODULE(FAppCenterModule, AppCenter)
