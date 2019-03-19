@@ -3,8 +3,12 @@
 <root xmlns:android="http://schemas.android.com/apk/res/android">
   <init>
     <log text="AppCenter Android Initialization"/>
-    <setBoolFromProperty result="bEnableAppCenter" ini="Engine" section="/Script/AppCenter.AppCenterSettings" property="bEnableAppCenter" default="true"/>
+    <setBoolFromProperty result="bEnableAnalytics" ini="Engine" section="/Script/AppCenter.AppCenterSettings" property="bEnableAnalytics" default="false"/>
+    <setBoolFromProperty result="bEnableCrashes" ini="Engine" section="/Script/AppCenter.AppCenterSettings" property="bEnableCrashes" default="false"/>
+    <setBoolFromProperty result="bEnableDistribute" ini="Engine" section="/Script/AppCenter.AppCenterSettings" property="bEnableDistribute" default="false"/>
+    <setBoolFromProperty result="bEnablePush" ini="Engine" section="/Script/AppCenter.AppCenterSettings" property="bEnablePush" default="false"/>
     <setStringFromProperty result="AppSecret" ini="Engine" section="/Script/AppCenter.AppCenterSettings" property="AppSecret" default=""/>
+    <setStringFromProperty result="SdkVersion" ini="Engine" section="/Script/AppCenter.AppCenterSettings" property="SdkVersion" default="1.11.4"/>
   </init>
 
   <androidManifestUpdates>
@@ -14,14 +18,42 @@
   </proguardAdditions>
 
   <buildGradleAdditions>
-    <if condition="bEnableAppCenter">
+    <if condition="bEnableAnalytics">
       <true>
         <insert>
           dependencies {
-            def appCenterSdkVersion = '1.11.4'
+            def appCenterSdkVersion = '</insert><insertValue value="$S(SdkVersion)" /><insert>'
             implementation "com.microsoft.appcenter:appcenter-analytics:${appCenterSdkVersion}"
+          }
+        </insert>
+      </true>
+    </if>
+    <if condition="bEnableCrashes">
+      <true>
+        <insert>
+          dependencies {
+            def appCenterSdkVersion = '</insert><insertValue value="$S(SdkVersion)" /><insert>'
             implementation "com.microsoft.appcenter:appcenter-crashes:${appCenterSdkVersion}"
+          }
+        </insert>
+      </true>
+    </if>
+    <if condition="bEnableDistribute">
+      <true>
+        <insert>
+          dependencies {
+            def appCenterSdkVersion = '</insert><insertValue value="$S(SdkVersion)" /><insert>'
             implementation "com.microsoft.appcenter:appcenter-distribute:${appCenterSdkVersion}"
+          }
+        </insert>
+      </true>
+    </if>
+    <if condition="bEnablePush">
+      <true>
+        <insert>
+          dependencies {
+            def appCenterSdkVersion = '</insert><insertValue value="$S(SdkVersion)" /><insert>'
+            implementation "com.microsoft.appcenter:appcenter-push:${appCenterSdkVersion}"
           }
         </insert>
       </true>
@@ -29,20 +61,42 @@
   </buildGradleAdditions>
 
   <gameActivityImportAdditions>
-    <if condition="bEnableAppCenter">
+    <if condition="bEnableAnalytics">
       <true>
         <insert>
           import com.microsoft.appcenter.AppCenter;
           import com.microsoft.appcenter.analytics.Analytics;
+        </insert>
+      </true>
+    </if>
+    <if condition="bEnableCrashes">
+      <true>
+        <insert>
+          import com.microsoft.appcenter.AppCenter;
           import com.microsoft.appcenter.crashes.Crashes;
+        </insert>
+      </true>
+    </if>
+    <if condition="bEnableDistribute">
+      <true>
+        <insert>
+          import com.microsoft.appcenter.AppCenter;
           import com.microsoft.appcenter.distribute.Distribute;
+        </insert>
+      </true>
+    </if>
+    <if condition="bEnablePush">
+      <true>
+        <insert>
+          import com.microsoft.appcenter.AppCenter;
+          import com.microsoft.appcenter.push.Push;
         </insert>
       </true>
     </if>
   </gameActivityImportAdditions>
 
   <gameActivityClassAdditions>
-    <if condition="bEnableAppCenter">
+    <if condition="bEnableDistribute">
       <true>
         <insert>
          
@@ -52,16 +106,31 @@
   </gameActivityClassAdditions>
 
   <gameActivityOnCreateAdditions>
-    <if condition="bEnableAppCenter">
+    <if condition="bEnableAnalytics">
       <true>
-        <insertValue value="        String appToken = &quot;$S(AppSecret)&quot;;" />
-        <insertNewline/>
         <insert>
-          AppCenter.start(getApplication(), appToken, Analytics.class);
-          AppCenter.start(getApplication(), appToken, Crashes.class);
-          AppCenter.start(getApplication(), appToken, Distribute.class);
-
-          Analytics.trackEvent("My custom event");
+          AppCenter.start(getApplication(), </insert><insertValue value="&quot;$S(AppSecret)&quot;" /><insert>, Analytics.class);
+        </insert>
+      </true>
+    </if>
+    <if condition="bEnableCrashes">
+      <true>
+        <insert>
+          AppCenter.start(getApplication(), </insert><insertValue value="&quot;$S(AppSecret)&quot;" /><insert>, Crashes.class);
+        </insert>
+      </true>
+    </if>
+    <if condition="bEnableDistribute">
+      <true>
+        <insert>
+          AppCenter.start(getApplication(), </insert><insertValue value="&quot;$S(AppSecret)&quot;" /><insert>, Distribute.class);
+        </insert>
+      </true>
+    </if>
+    <if condition="bEnablePush">
+      <true>
+        <insert>
+          AppCenter.start(getApplication(), </insert><insertValue value="&quot;$S(AppSecret)&quot;" /><insert>, Push.class);
         </insert>
       </true>
     </if>
