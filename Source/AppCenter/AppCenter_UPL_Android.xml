@@ -76,6 +76,7 @@
           import android.os.Environment;
           import com.microsoft.appcenter.AppCenter;
           import com.microsoft.appcenter.crashes.Crashes;
+          import com.microsoft.appcenter.utils.async.AppCenterConsumer;
         </insert>
       </true>
     </if>
@@ -130,18 +131,18 @@
     <if condition="bEnableCrashes">
       <true>
         <insert>
-          try {
-            String crashDumpsPath = Environment.getExternalStorageDirectory().getPath() + "/UE4CrashDumps/" + getPackageName() + "/";
-            File crashDumpsDir = new File(crashDumpsPath);
-            if (crashDumpsDir.exists() == false) {
-              crashDumpsDir.mkdirs();
+          Crashes.getMinidumpDirectory().thenAccept(new AppCenterConsumer&lt;String&gt;() {
+
+            @Override
+            public void accept(String path) {
+
+              /* Path is null when Crashes is disabled */
+              if (path != null) {
+                setUpBreakpad(path);
+              }
             }
-            
-            setUpBreakpad(crashDumpsPath);
-          }
-          catch (Exception e) {
-            Log.debug("Can't create a dir for crash dump logs. Exception: " + e);
-          }
+          });
+ 
           // AppCenter.start(getApplication(), </insert><insertValue value="&quot;$S(AppSecret)&quot;" /><insert>, Crashes.class);
         </insert>
       </true>
