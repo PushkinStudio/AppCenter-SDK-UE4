@@ -73,6 +73,7 @@
     <if condition="bEnableCrashes">
       <true>
         <insert>
+          import android.os.Environment;
           import com.microsoft.appcenter.AppCenter;
           import com.microsoft.appcenter.crashes.Crashes;
         </insert>
@@ -100,6 +101,8 @@
     <if condition="bEnableCrashes">
       <true>
         <insert>
+          native void setUpBreakpad(String path);
+          
           public void AndroidThunkJava_TestCrash()
           {
             Crashes.generateTestCrash();
@@ -127,7 +130,19 @@
     <if condition="bEnableCrashes">
       <true>
         <insert>
-         // AppCenter.start(getApplication(), </insert><insertValue value="&quot;$S(AppSecret)&quot;" /><insert>, Crashes.class);
+          try {
+            String crashDumpsPath = Environment.getExternalStorageDirectory().getPath() + "/UE4CrashDumps/" + getPackageName() + "/";
+            File crashDumpsDir = new File(crashDumpsPath);
+            if (crashDumpsDir.exists() == false) {
+              crashDumpsDir.mkdirs();
+            }
+            
+            setUpBreakpad(crashDumpsPath);
+          }
+          catch (Exception e) {
+            Log.debug("Can't create a dir for crash dump logs. Exception: " + e);
+          }
+          // AppCenter.start(getApplication(), </insert><insertValue value="&quot;$S(AppSecret)&quot;" /><insert>, Crashes.class);
         </insert>
       </true>
     </if>

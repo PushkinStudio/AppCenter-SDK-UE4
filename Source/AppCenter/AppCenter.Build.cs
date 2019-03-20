@@ -57,6 +57,24 @@ public class AppCenter : ModuleRules
 
             string PluginPath = Utils.MakePathRelativeTo(ModuleDirectory, Target.RelativeEnginePath);
             AdditionalPropertiesForReceipt.Add("AndroidPlugin", Path.Combine(PluginPath, "AppCenter_UPL_Android.xml"));
+
+            /** 
+             * Application.mk
+             * 
+             * APP_STL := gnustl_static
+             * APP_ABI := armeabi-v7a
+             * APP_CXXFLAGS := -std=c++11 -D__STDC_LIMIT_MACROS
+             * APP_PLATFORM := android-19
+             */
+            string ThirdPartyPath = Path.Combine(ModuleDirectory, "..", "ThirdParty");
+            PublicIncludePaths.Add(Path.Combine(ThirdPartyPath, "Breakpad", "src"));
+            PublicAdditionalLibraries.Add(Path.Combine(ThirdPartyPath, "Breakpad", "lib", "libbreakpad_client.a"));
+
+            Definitions.Add("WITH_APPCENTER=1");
+        }
+        else
+        {
+            Definitions.Add("WITH_APPCENTER=0");
         }
     }
 }
