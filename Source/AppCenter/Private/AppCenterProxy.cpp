@@ -16,3 +16,8 @@ void UAppCenterProxy::TestCrash()
 {
 	UE_LOG(LogAppCenter, Warning, TEXT("%s: Null proxy used"), *PS_FUNC_LINE);
 }
+
+void UAppCenterProxy::TestNativeCrash()
+{
+	UE_LOG(LogAppCenter, Warning, TEXT("%s: Null proxy used"), *PS_FUNC_LINE);
+}

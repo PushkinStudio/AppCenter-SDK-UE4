@@ -15,4 +15,8 @@ class APPCENTER_API UAppCenterProxy : public UObject
 	/** Force crash */
 	UFUNCTION(BlueprintCallable, Category = "AppCenter|Crashes")
 	virtual void TestCrash();
+
+	/** Force native crash */
+	UFUNCTION(BlueprintCallable, Category = "AppCenter|Crashes")
+	virtual void TestNativeCrash();
 };

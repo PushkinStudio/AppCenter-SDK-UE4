@@ -48,12 +48,16 @@ UAppCenter_Android::UAppCenter_Android(const FObjectInitializer& ObjectInitializ
 #if PLATFORM_ANDROID
 void UAppCenter_Android::TestCrash()
 {
-	abort();
-	/*
 	if (JNIEnv* Env = FAndroidApplication::GetJavaEnv())
 	{
 		static jmethodID Method = FJavaWrapper::FindMethod(Env, FJavaWrapper::GameActivityClassID, "AndroidThunkJava_TestCrash", "()V", false);
 		FJavaWrapper::CallVoidMethod(Env, FJavaWrapper::GameActivityThis, Method);
-	}*/
+	}
+}
+
+void UAppCenter_Android::TestNativeCrash()
+{
+	volatile int* a = reinterpret_cast<volatile int*>(nullptr);
+	*a = 1;
 }
 #endif // PLATFORM_ANDROID
