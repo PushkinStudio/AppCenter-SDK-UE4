@@ -19,4 +19,9 @@ class APPCENTER_API UAppCenterProxy : public UObject
 	/** Force native crash */
 	UFUNCTION(BlueprintCallable, Category = "AppCenter|Crashes")
 	virtual void TestNativeCrash();
+
+	/** Did the app crash in the previous session */
+	UFUNCTION(BlueprintCallable, Category = "AppCenter|Crashes")
+	virtual bool HasCrashedInLastSession();
+
 };

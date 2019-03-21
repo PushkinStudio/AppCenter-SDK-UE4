@@ -21,3 +21,9 @@ void UAppCenterProxy::TestNativeCrash()
 {
 	UE_LOG(LogAppCenter, Warning, TEXT("%s: Null proxy used"), *PS_FUNC_LINE);
 }
+
+bool UAppCenterProxy::HasCrashedInLastSession()
+{
+	UE_LOG(LogAppCenter, Warning, TEXT("%s: Null proxy used"), *PS_FUNC_LINE);
+	return false;
+}

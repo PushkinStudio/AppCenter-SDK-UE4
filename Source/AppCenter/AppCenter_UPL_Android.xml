@@ -146,6 +146,11 @@
               {
                 Crashes.generateTestCrash();
               }
+
+              public boolean AndroidThunkJava_HasCrashedInLastSession()
+              {
+                return Crashes.hasCrashedInLastSession().get();
+              }
               ]]>
             </insert>
           </true>
@@ -213,10 +218,10 @@
         <insert>
           <![CDATA[);]]>
         </insert>
+        <insertNewline/>
 
         <if condition="bEnableCrashes">
           <true>
-            <insertNewline/>
             <insert>
               <![CDATA[
               Crashes.getMinidumpDirectory().thenAccept(new AppCenterConsumer<String>() {
