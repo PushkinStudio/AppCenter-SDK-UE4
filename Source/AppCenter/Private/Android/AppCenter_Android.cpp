@@ -46,6 +46,7 @@ UAppCenter_Android::UAppCenter_Android(const FObjectInitializer& ObjectInitializ
 }
 
 #if PLATFORM_ANDROID
+
 void UAppCenter_Android::TestCrash()
 {
 	if (JNIEnv* Env = FAndroidApplication::GetJavaEnv())
@@ -58,17 +59,6 @@ void UAppCenter_Android::TestCrash()
 void UAppCenter_Android::TestNativeCrash()
 {
 	abort();
-}
-
-bool UAppCenter_Android::HasCrashedInLastSession()
-{
-	if (JNIEnv* Env = FAndroidApplication::GetJavaEnv())
-	{
-		static jmethodID Method = FJavaWrapper::FindMethod(Env, FJavaWrapper::GameActivityClassID, "AndroidThunkJava_HasCrashedInLastSession", "()V", false);
-		return FJavaWrapper::CallBooleanMethod(Env, FJavaWrapper::GameActivityThis, Method);
-	}
-
-	return false;
 }
 
 #endif // PLATFORM_ANDROID

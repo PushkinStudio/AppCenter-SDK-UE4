@@ -14,6 +14,5 @@ class UAppCenter_Android : public UAppCenterProxy
 #if PLATFORM_ANDROID
 	virtual void TestCrash() override;
 	virtual void TestNativeCrash() override;
-	virtual bool HasCrashedInLastSession() override;
 #endif
 };
