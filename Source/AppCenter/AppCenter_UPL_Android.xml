@@ -2,14 +2,29 @@
 <!-- AppCenter plugin additions-->
 <root xmlns:android="http://schemas.android.com/apk/res/android">
   <init>
-    <log text="AppCenter Android Initialization"/>
+    <log text="AppCenter SDK Android Initialization"/>
+
     <setBoolFromProperty result="bEnableAnalytics" ini="Engine" section="/Script/AppCenter.AppCenterSettings" property="bEnableAnalytics" default="false"/>
     <setBoolFromProperty result="bEnableCrashes" ini="Engine" section="/Script/AppCenter.AppCenterSettings" property="bEnableCrashes" default="false"/>
     <setBoolFromProperty result="bEnableDistribute" ini="Engine" section="/Script/AppCenter.AppCenterSettings" property="bEnableDistribute" default="false"/>
     <setBoolFromProperty result="bEnablePush" ini="Engine" section="/Script/AppCenter.AppCenterSettings" property="bEnablePush" default="false"/>
     <setStringFromProperty result="AppSecret" ini="Engine" section="/Script/AppCenter.AppCenterSettings" property="AppSecret" default=""/>
     <setStringFromProperty result="SdkVersion" ini="Engine" section="/Script/AppCenter.AppCenterSettings" property="SdkVersion" default="1.11.4"/>
-    <setBoolFromProperty result="bDebug" ini="Engine" section="/Script/AppCenter.AppCenterSettings" property="bDebug" default="true"/>
+    <setBoolFromProperty result="bDebug" ini="Engine" section="/Script/AppCenter.AppCenterSettings" property="bDebug" default="false"/>
+
+    <!-- Check that we have any AppCenter SDK enabled -->
+    <setBoolIsEqual result="bEmptyAppSecret" arg1="$S(AppSecret)" arg2=""/>
+    <setBoolNot result="bHasSecret" source="$B(bEmptyAppSecret)"/>
+    <setBoolOr result="isAnalyticsOrCrashes" arg1="$B(bEnableAnalytics)" arg2="$B(bEnableCrashes)"/>
+    <setBoolOr result="isDistributeOrPush" arg1="$B(bEnableDistribute)" arg2="$B(bEnablePush)"/>
+    <setBoolOr result="isAnyModuleEnabled" arg1="$B(isAnalyticsOrCrashes)" arg2="$B(isDistributeOrPush)"/>
+    <setBoolIsEqual result="isAppCenterEnabled" arg1="$B(bHasSecret)" arg2="$B(isAnyModuleEnabled)"/>
+
+    <if condition="bHasSecret">
+      <false>
+        <log text="AppCenter SDK is disabled: please provide AppSecret key in plugin settings"/>
+      </false>
+    </if>
   </init>
 
   <androidManifestUpdates>
@@ -19,42 +34,47 @@
   </proguardAdditions>
 
   <buildGradleAdditions>
-    <if condition="bEnableAnalytics">
+    <if condition="isAppCenterEnabled">
       <true>
         <insert>
           dependencies {
-            def appCenterSdkVersion = '</insert><insertValue value="$S(SdkVersion)" /><insert>'
-            implementation "com.microsoft.appcenter:appcenter-analytics:${appCenterSdkVersion}"
-          }
         </insert>
-      </true>
-    </if>
-    <if condition="bEnableCrashes">
-      <true>
+
+        <insertValue value="def appCenterSdkVersion = '$S(SdkVersion)'" />
+        <insertNewline/>
+
+        <if condition="bEnableAnalytics">
+          <true>
+            <insert>
+              implementation "com.microsoft.appcenter:appcenter-analytics:${appCenterSdkVersion}"
+            </insert>
+          </true>
+        </if>
+
+        <if condition="bEnableCrashes">
+          <true>
+            <insert>
+              implementation "com.microsoft.appcenter:appcenter-crashes:${appCenterSdkVersion}"
+            </insert>
+          </true>
+        </if>
+
+        <if condition="bEnableDistribute">
+          <true>
+            <insert>
+              implementation "com.microsoft.appcenter:appcenter-distribute:${appCenterSdkVersion}"
+            </insert>
+          </true>
+        </if>
+
+        <if condition="bEnablePush">
+          <true>
+            <insert>
+              implementation "com.microsoft.appcenter:appcenter-push:${appCenterSdkVersion}"
+            </insert>
+          </true>
+        </if>
         <insert>
-          dependencies {
-            def appCenterSdkVersion = '</insert><insertValue value="$S(SdkVersion)" /><insert>'
-            implementation "com.microsoft.appcenter:appcenter-crashes:${appCenterSdkVersion}"
-          }
-        </insert>
-      </true>
-    </if>
-    <if condition="bEnableDistribute">
-      <true>
-        <insert>
-          dependencies {
-            def appCenterSdkVersion = '</insert><insertValue value="$S(SdkVersion)" /><insert>'
-            implementation "com.microsoft.appcenter:appcenter-distribute:${appCenterSdkVersion}"
-          }
-        </insert>
-      </true>
-    </if>
-    <if condition="bEnablePush">
-      <true>
-        <insert>
-          dependencies {
-            def appCenterSdkVersion = '</insert><insertValue value="$S(SdkVersion)" /><insert>'
-            implementation "com.microsoft.appcenter:appcenter-push:${appCenterSdkVersion}"
           }
         </insert>
       </true>
@@ -62,103 +82,158 @@
   </buildGradleAdditions>
 
   <gameActivityImportAdditions>
-    <if condition="bEnableAnalytics">
+    <if condition="isAppCenterEnabled">
       <true>
+        <if condition="bDebug">
+          <true>
+            <insert>
+              import android.util.Log;
+            </insert>
+          </true>
+        </if>
+
         <insert>
           import com.microsoft.appcenter.AppCenter;
-          import com.microsoft.appcenter.analytics.Analytics;
         </insert>
-      </true>
-    </if>
-    <if condition="bEnableCrashes">
-      <true>
-        <insert>
-          import android.os.Environment;
-          import com.microsoft.appcenter.AppCenter;
-          import com.microsoft.appcenter.crashes.Crashes;
-          import com.microsoft.appcenter.utils.async.AppCenterConsumer;
-        </insert>
-      </true>
-    </if>
-    <if condition="bEnableDistribute">
-      <true>
-        <insert>
-          import com.microsoft.appcenter.AppCenter;
-          import com.microsoft.appcenter.distribute.Distribute;
-        </insert>
-      </true>
-    </if>
-    <if condition="bEnablePush">
-      <true>
-        <insert>
-          import com.microsoft.appcenter.AppCenter;
-          import com.microsoft.appcenter.push.Push;
-        </insert>
+
+        <if condition="bEnableAnalytics">
+          <true>
+            <insert>
+              import com.microsoft.appcenter.analytics.Analytics;
+            </insert>
+          </true>
+        </if>
+
+        <if condition="bEnableCrashes">
+          <true>
+            <insert>
+              import android.os.Environment;
+              import com.microsoft.appcenter.crashes.Crashes;
+              import com.microsoft.appcenter.utils.async.AppCenterConsumer;
+            </insert>
+          </true>
+        </if>
+
+        <if condition="bEnableDistribute">
+          <true>
+            <insert>
+              import com.microsoft.appcenter.distribute.Distribute;
+            </insert>
+          </true>
+        </if>
+
+        <if condition="bEnablePush">
+          <true>
+            <insert>
+              import com.microsoft.appcenter.push.Push;
+            </insert>
+          </true>
+        </if>
       </true>
     </if>
   </gameActivityImportAdditions>
 
   <gameActivityClassAdditions>
-    <if condition="bEnableCrashes">
+    <if condition="isAppCenterEnabled">
       <true>
-        <insert>
-          native void setUpBreakpad(String path);
-          
-          public void AndroidThunkJava_TestCrash()
-          {
-            Crashes.generateTestCrash();
-          }
-        </insert>
+        <if condition="bEnableCrashes">
+          <true>
+            <insert>
+              <![CDATA[
+              native void setUpBreakpad(String path);
+
+              public void AndroidThunkJava_TestCrash()
+              {
+                Crashes.generateTestCrash();
+              }
+              ]]>
+            </insert>
+          </true>
+        </if>
       </true>
     </if>
   </gameActivityClassAdditions>
 
   <gameActivityOnCreateAdditions>
-    <if condition="bDebug">
+    <if condition="isAppCenterEnabled">
       <true>
-        <insert>
-          AppCenter.setLogLevel(2);
-        </insert>
-      </true>
-    </if>
-    <if condition="bEnableAnalytics">
-      <true>
-        <insert>
-          AppCenter.start(getApplication(), </insert><insertValue value="&quot;$S(AppSecret)&quot;" /><insert>, Analytics.class, Crashes.class);
-        </insert>
-      </true>
-    </if>
-    <if condition="bEnableCrashes">
-      <true>
-        <insert>
-          Crashes.getMinidumpDirectory().thenAccept(new AppCenterConsumer&lt;String&gt;() {
 
-            @Override
-            public void accept(String path) {
+        <if condition="bDebug">
+          <true>
+            <insert>
+              <![CDATA[
+              AppCenter.setLogLevel(android.util.Log.VERBOSE);
+              ]]>
+            </insert>
+          </true>
+        </if>
 
-              /* Path is null when Crashes is disabled */
-              if (path != null) {
-                setUpBreakpad(path);
-              }
-            }
-          });
- 
-          // AppCenter.start(getApplication(), </insert><insertValue value="&quot;$S(AppSecret)&quot;" /><insert>, Crashes.class);
-        </insert>
-      </true>
-    </if>
-    <if condition="bEnableDistribute">
-      <true>
         <insert>
-          //AppCenter.start(getApplication(), </insert><insertValue value="&quot;$S(AppSecret)&quot;" /><insert>, Distribute.class);
+          <![CDATA[
+          AppCenter.start(getApplication(), "]]>
         </insert>
-      </true>
-    </if>
-    <if condition="bEnablePush">
-      <true>
+        <insertValue value="$S(AppSecret)" />
         <insert>
-          //AppCenter.start(getApplication(), </insert><insertValue value="&quot;$S(AppSecret)&quot;" /><insert>, Push.class);
+          <![CDATA["]]>
         </insert>
+
+        <if condition="bEnableAnalytics">
+          <true>
+            <insert>
+              <![CDATA[, Analytics.class]]>
+            </insert>
+          </true>
+        </if>
+
+        <if condition="bEnableCrashes">
+          <true>
+            <insert>
+              <![CDATA[, Crashes.class]]>
+            </insert>
+          </true>
+        </if>
+
+        <if condition="bEnableDistribute">
+          <true>
+            <insert>
+              <![CDATA[, Distribute.class]]>
+            </insert>
+          </true>
+        </if>
+
+        <if condition="bEnablePush">
+          <true>
+            <insert>
+              <![CDATA[, Push.class]]>
+            </insert>
+          </true>
+        </if>
+
+        <!-- Close AppCenter.start( -->
+        <insert>
+          <![CDATA[);]]>
+        </insert>
+
+        <if condition="bEnableCrashes">
+          <true>
+            <insertNewline/>
+            <insert>
+              <![CDATA[
+              Crashes.getMinidumpDirectory().thenAccept(new AppCenterConsumer<String>() {
+
+                @Override
+                public void accept(String path) {
+
+                  /* Path is null when Crashes is disabled */
+                  if (path != null) {
+                    setUpBreakpad(path);
+                  }
+                }
+              });
+              ]]>
+            </insert>
+          </true>
+        </if>
       </true>
     </if>
   </gameActivityOnCreateAdditions>
