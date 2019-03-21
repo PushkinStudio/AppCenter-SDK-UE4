@@ -57,7 +57,6 @@ void UAppCenter_Android::TestCrash()
 
 void UAppCenter_Android::TestNativeCrash()
 {
-	volatile int* a = reinterpret_cast<volatile int*>(nullptr);
-	*a = 1;
+	abort();
 }
 #endif // PLATFORM_ANDROID
