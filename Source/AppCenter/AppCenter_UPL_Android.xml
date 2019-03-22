@@ -18,7 +18,7 @@
     <setBoolOr result="isAnalyticsOrCrashes" arg1="$B(bEnableAnalytics)" arg2="$B(bEnableCrashes)"/>
     <setBoolOr result="isDistributeOrPush" arg1="$B(bEnableDistribute)" arg2="$B(bEnablePush)"/>
     <setBoolOr result="isAnyModuleEnabled" arg1="$B(isAnalyticsOrCrashes)" arg2="$B(isDistributeOrPush)"/>
-    <setBoolIsEqual result="isAppCenterEnabled" arg1="$B(bHasSecret)" arg2="$B(isAnyModuleEnabled)"/>
+    <setBoolAnd result="isAppCenterEnabled" arg1="$B(bHasSecret)" arg2="$B(isAnyModuleEnabled)"/>
 
     <if condition="bHasSecret">
       <false>
