@@ -62,13 +62,16 @@ public class AppCenter : ModuleRules
              * Application.mk
              * 
              * APP_STL := gnustl_static
-             * APP_ABI := armeabi-v7a
+             * APP_ABI := armeabi-v7a, arm64-v8a
              * APP_CXXFLAGS := -std=c++11 -D__STDC_LIMIT_MACROS
              * APP_PLATFORM := android-19
              */
             string ThirdPartyPath = Path.Combine(ModuleDirectory, "..", "ThirdParty");
             PublicIncludePaths.Add(Path.Combine(ThirdPartyPath, "Breakpad", "src"));
-            PublicAdditionalLibraries.Add(Path.Combine(ThirdPartyPath, "Breakpad", "lib", "libbreakpad_client.a"));
+
+            PublicLibraryPaths.Add(Path.Combine(ThirdPartyPath, "Breakpad", "lib", "armeabi-v7a"));
+            PublicLibraryPaths.Add(Path.Combine(ThirdPartyPath, "Breakpad", "lib", "arm64-v8a"));
+            PublicAdditionalLibraries.Add("breakpad_client");
 
             PublicDefinitions.Add("WITH_APPCENTER=1");
         }
