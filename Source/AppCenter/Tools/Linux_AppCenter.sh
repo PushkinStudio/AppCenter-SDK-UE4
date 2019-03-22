@@ -6,13 +6,19 @@ printUsageExit()
 {
     SCRIPT_NAME=`basename "$0"`
     SCRIPT_NAME="Tools/Build/$SCRIPT_NAME"
-    echo -e "ERROR: $1\n"												2>&1
-    echo "Usage: $SCRIPT_NAME [ packBreakpadSymbols ]"					2>&1
+    echo -e "ERROR: $1\n"																2>&1
+    echo "Usage: $SCRIPT_NAME [ packBreakpadSymbols armeabi-v7a|arm64-v8a ]"			2>&1
     exit 1
 }
 
 packBreakpadSymbols()
 {
+	if [ -z $1 ]; then
+        printUsageExit "Platform arcitecture not set"
+    fi
+
+	ARCH=$2
+
 	# Prepare directory to store symbols
 	ANDROID_DIR="Intermediate/Android"
 	pushd $ANDROID_DIR
@@ -25,8 +31,8 @@ packBreakpadSymbols()
 	echo "Dump the symbols using the Breakpad toolchain as described in the https://chromium.googlesource.com/breakpad/breakpad/+/master/README.ANDROID#93"
 
 	# There two paths we need to process
-	JNI_DIR=APK/jni/armeabi-v7a
-	LIBS_DIR=APK/libs/armeabi-v7a
+	JNI_DIR=APK/jni/$ARCH
+	LIBS_DIR=APK/libs/$ARCH
 
 	# Create a symbols.zip file with the following structure:
 	# $ unzip -l symbols.zip 
@@ -69,10 +75,17 @@ packBreakpadSymbols()
 	popd
 }
 
-if [ $# -eq 0 ]; then
+if [[ $# -eq 0 ]]; then
     printUsageExit "Parameters not found"
 else
-	if [ "$1" == "packBreakpadSymbols" ]; then packBreakpadSymbols
+	if [[ $# -eq 2 ]]; then
+		if [ "$2" == "armeabi-v7a" ]; then :;
+		elif [ "$2" == "arm64-v8a" ]; then :;
+		else printUsageExit "Unknown 2nd parameter: $2"
+		fi
+	fi
+
+	if [ "$1" == "packBreakpadSymbols" ]; then packBreakpadSymbols $2
     else printUsageExit "Unknown 1st parameter: $1"
     fi
 fi
