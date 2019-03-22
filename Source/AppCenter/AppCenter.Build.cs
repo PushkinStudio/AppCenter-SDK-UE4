@@ -70,11 +70,11 @@ public class AppCenter : ModuleRules
             PublicIncludePaths.Add(Path.Combine(ThirdPartyPath, "Breakpad", "src"));
             PublicAdditionalLibraries.Add(Path.Combine(ThirdPartyPath, "Breakpad", "lib", "libbreakpad_client.a"));
 
-            Definitions.Add("WITH_APPCENTER=1");
+            PublicDefinitions.Add("WITH_APPCENTER=1");
         }
         else
         {
-            Definitions.Add("WITH_APPCENTER=0");
+            PublicDefinitions.Add("WITH_APPCENTER=0");
         }
     }
 }
