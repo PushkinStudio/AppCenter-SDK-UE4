@@ -8,7 +8,7 @@
     <setBoolFromProperty result="bEnableCrashes" ini="Engine" section="/Script/AppCenter.AppCenterSettings" property="bEnableCrashes" default="false"/>
     <setBoolFromProperty result="bEnableDistribute" ini="Engine" section="/Script/AppCenter.AppCenterSettings" property="bEnableDistribute" default="false"/>
     <setBoolFromProperty result="bEnablePush" ini="Engine" section="/Script/AppCenter.AppCenterSettings" property="bEnablePush" default="false"/>
-    <setStringFromProperty result="AppSecret" ini="Engine" section="/Script/AppCenter.AppCenterSettings" property="AppSecret" default=""/>
+    <setStringFromProperty result="AppSecret" ini="Engine" section="/Script/AppCenter.AppCenterSettings" property="AppSecretAndroid" default=""/>
     <setStringFromProperty result="SdkVersion" ini="Engine" section="/Script/AppCenter.AppCenterSettings" property="SdkVersion" default="1.11.4"/>
     <setBoolFromProperty result="bDebug" ini="Engine" section="/Script/AppCenter.AppCenterSettings" property="bDebug" default="false"/>
 

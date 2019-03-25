@@ -28,7 +28,11 @@ public:
 
 	/** The App Secret can be found on the Getting Started page or Settings page on the App Center portal */
 	UPROPERTY(Config, EditAnywhere)
-	FString AppSecret;
+	FString AppSecretAndroid;
+
+	/** The App Secret can be found on the Getting Started page or Settings page on the App Center portal */
+	UPROPERTY(Config, EditAnywhere)
+	FString AppSecretIOS;
 
 	/** If you want to see the logs that get sent to the backend, set debug to true and the SDK will print logs in the console */
 	UPROPERTY(Config, EditAnywhere)
