@@ -37,7 +37,7 @@ packSharedObjects()
 	find $JNI_DIR $LIBS_DIR -name '*.so' | while read so_file; do
 		echo "Processing file '$so_file'"
 
-		cp --verbose $so_file $SO_DIR/$(basename $so_file)
+		cp -v $so_file $SO_DIR/$(basename $so_file)
 	done
 
 	# cleanup if we have some junk
@@ -104,7 +104,7 @@ dumpBreakpadSymbols()
 		symfile_dir="$SYMBOLS_DIR/$(basename $so_file)/$version_number"
 		mkdir -p $symfile_dir
 
-		mv --verbose $sym_file $symfile_dir/$(basename $sym_file)
+		mv -v $sym_file $symfile_dir/$(basename $sym_file)
 	done
 
 	# cleanup if we have some junk
