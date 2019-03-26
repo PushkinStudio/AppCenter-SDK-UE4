@@ -9,6 +9,12 @@
 #include "Developer/Settings/Public/ISettingsModule.h"
 #include "UObject/Package.h"
 
+#if PLATFORM_IOS
+#include "AppCenter_IOS.h"
+#elif PLATFORM_ANDROID
+#include "AppCenter_Android.h"
+#endif
+
 #define LOCTEXT_NAMESPACE "FAppCenterModule"
 
 void FAppCenterModule::StartupModule()
@@ -28,7 +34,7 @@ void FAppCenterModule::StartupModule()
 	// Proxy class depends on platform
 	UClass* KitPlatformClass = UAppCenterProxy::StaticClass();
 #if PLATFORM_IOS
-	//KitPlatformClass = UAppCenter_iOS::StaticClass();
+	KitPlatformClass = UAppCenter_IOS::StaticClass();
 #elif PLATFORM_ANDROID
 	KitPlatformClass = UAppCenter_Android::StaticClass();
 #endif

@@ -2,26 +2,13 @@
 
 using System.IO;
 using UnrealBuildTool;
+using Tools.DotNETCommon;
 
 public class AppCenter : ModuleRules
 {
     public AppCenter(ReadOnlyTargetRules Target) : base(Target)
     {
         PCHUsage = ModuleRules.PCHUsageMode.UseExplicitOrSharedPCHs;
-
-        PublicIncludePaths.AddRange(
-            new string[] {
-				// ... add public include paths required here ...
-			}
-            );
-
-
-        PrivateIncludePaths.AddRange(
-            new string[] {
-				// ... add other private include paths required here ...
-			}
-            );
-
 
         PublicDependencyModuleNames.AddRange(
             new string[]
@@ -43,16 +30,10 @@ public class AppCenter : ModuleRules
 			}
             );
 
-
-        DynamicallyLoadedModuleNames.AddRange(
-            new string[]
-            {
-				// ... add any modules that your module loads dynamically here ...
-			}
-            );
-
         if (Target.Platform == UnrealTargetPlatform.Android)
         {
+            PrivateIncludePaths.Add("AppCenter/Private/Android");
+
             PublicDependencyModuleNames.AddRange(new string[] { "Launch" });
 
             string PluginPath = Utils.MakePathRelativeTo(ModuleDirectory, Target.RelativeEnginePath);
@@ -74,6 +55,51 @@ public class AppCenter : ModuleRules
             PublicAdditionalLibraries.Add("breakpad_client");
 
             PublicDefinitions.Add("WITH_APPCENTER=1");
+        }
+        else if (Target.Platform == UnrealTargetPlatform.IOS)
+        {
+            PrivateIncludePaths.Add("AppCenter/Private/IOS");
+
+            bool bEnableAnalytics = false;
+            bool bEnableCrashes = false;
+            bool bEnableDistribute = false;
+            bool bEnablePush = false;
+            string AppSecretIOS = "";
+
+            // Read from config
+            ConfigHierarchy Ini = ConfigCache.ReadHierarchy(ConfigHierarchyType.Engine, Target.ProjectFile.Directory, Target.Platform);
+
+            string SettingsSection = "/Script/AppCenter.AppCenterSettings";
+            Ini.GetBool(SettingsSection, "bEnableAnalytics", out bEnableAnalytics);
+            Ini.GetBool(SettingsSection, "bEnableCrashes", out bEnableCrashes);
+            Ini.GetBool(SettingsSection, "bEnableDistribute", out bEnableDistribute);
+            Ini.GetBool(SettingsSection, "bEnablePush", out bEnablePush);
+            Ini.GetString(SettingsSection, "AppSecretIOS", out AppSecretIOS);
+            bool bEnableAppCenter = true;// (bEnableAnalytics | bEnableCrashes | bEnableDistribute | bEnablePush) && (AppSecretIOS != "");
+
+            if (bEnableAppCenter)
+            {
+                PublicDefinitions.Add("WITH_APPCENTER=1");
+
+                // The AppCenter.framework is required to start the SDK. If it is not added to the project, 
+                // the other modules won't work and your app won't compile.
+                PublicAdditionalFrameworks.Add(
+                    new UEBuildFramework(
+                        "AppCenter",
+                        "../../ThirdParty/AppCenter-SDK-Apple/iOS/AppCenter.embeddedframework.zip"
+                    )
+                );
+
+                if (bEnableAnalytics)
+                {
+                    PublicAdditionalFrameworks.Add(
+                        new UEBuildFramework(
+                            "AppCenterAnalytics",
+                            "../../ThirdParty/AppCenter-SDK-Apple/iOS/AppCenterAnalytics.embeddedframework.zip"
+                        )
+                    );
+                }
+            }
         }
         else
         {
