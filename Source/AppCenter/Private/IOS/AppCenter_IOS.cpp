@@ -3,6 +3,7 @@
 #include "AppCenter_IOS.h"
 
 #include "AppCenterDefines.h"
+#include "AppCenterSettings.h"
 
 #if PLATFORM_IOS
 THIRD_PARTY_INCLUDES_START
@@ -11,6 +12,7 @@ THIRD_PARTY_INCLUDES_START
 #pragma clang diagnostic ignored "-Wduplicate-protocol"
 #import <AppCenter/AppCenter.h>
 #import <AppCenterAnalytics/AppCenterAnalytics.h>
+#import <AppCenterCrashes/AppCenterCrashes.h>
 #pragma clang diagnostic pop
 THIRD_PARTY_INCLUDES_END
 #endif // PLATFORM_IOS
@@ -47,7 +49,24 @@ static AppCenterObserver* AppCenterObserverInstance = nil;
 
 - (void)didFinishLaunching:(NSNotification*)notification
 {
-	[MSAppCenter start:@"MyAppSecret" withServices:@[ [MSAnalytics class] ]];
+	NSDictionary* AppCenterDict = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"AppCenter"];
+	if (AppCenterDict == nil)
+	{
+		NSLog(@"AppCenterSDK: Can't read plist properties.");
+	}
+
+	NSString* AppSecret = [AppCenterDict objectForKey:@"AppSecret"];
+	if (AppSecret == nil)
+	{
+		NSLog(@"AppCenterSDK: AppSecret is not set.");
+		return;
+	}
+
+	NSMutableArray* AppCenterModules = [[NSMutableArray alloc] init];
+	[AppCenterModules addObject:[MSAnalytics class]];
+	[AppCenterModules addObject:[MSCrashes class]];
+
+	[MSAppCenter start:AppSecret withServices:AppCenterModules];
 }
 
 @end

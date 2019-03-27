@@ -60,6 +60,9 @@ public class AppCenter : ModuleRules
         {
             PrivateIncludePaths.Add("AppCenter/Private/IOS");
 
+            string PluginPath = Utils.MakePathRelativeTo(ModuleDirectory, Target.RelativeEnginePath);
+            AdditionalPropertiesForReceipt.Add("IOSPlugin", Path.Combine(PluginPath, "AppCenter_UPL_IOS.xml"));
+
             bool bEnableAnalytics = false;
             bool bEnableCrashes = false;
             bool bEnableDistribute = false;
@@ -96,6 +99,37 @@ public class AppCenter : ModuleRules
                         new UEBuildFramework(
                             "AppCenterAnalytics",
                             "../../ThirdParty/AppCenter-SDK-Apple/iOS/AppCenterAnalytics.embeddedframework.zip"
+                        )
+                    );
+                }
+
+                if (bEnableCrashes)
+                {
+                    PublicAdditionalFrameworks.Add(
+                        new UEBuildFramework(
+                            "AppCenterCrashes",
+                            "../../ThirdParty/AppCenter-SDK-Apple/iOS/AppCenterCrashes.embeddedframework.zip"
+                        )
+                    );
+                }
+
+                if (bEnableDistribute)
+                {
+                    PublicAdditionalFrameworks.Add(
+                        new UEBuildFramework(
+                            "AppCenterDistribute",
+                            "../../ThirdParty/AppCenter-SDK-Apple/iOS/AppCenterDistribute.embeddedframework.zip",
+                            "AppCenterDistributeResources.bundle/Info.plist"
+                        )
+                    );
+                }
+
+                if (bEnablePush)
+                {
+                    PublicAdditionalFrameworks.Add(
+                        new UEBuildFramework(
+                            "AppCenterPush",
+                            "../../ThirdParty/AppCenter-SDK-Apple/iOS/AppCenterPush.embeddedframework.zip"
                         )
                     );
                 }
