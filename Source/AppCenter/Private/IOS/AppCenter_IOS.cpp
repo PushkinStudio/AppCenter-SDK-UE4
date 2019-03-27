@@ -117,6 +117,7 @@ UAppCenter_IOS::UAppCenter_IOS(const FObjectInitializer& ObjectInitializer)
 
 void UAppCenter_IOS::TestCrash()
 {
+	[MSCrashes generateTestCrash];
 }
 
 void UAppCenter_IOS::TestNativeCrash()
