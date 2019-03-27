@@ -78,12 +78,16 @@ public class AppCenter : ModuleRules
             Ini.GetBool(SettingsSection, "bEnableDistribute", out bEnableDistribute);
             Ini.GetBool(SettingsSection, "bEnablePush", out bEnablePush);
             Ini.GetString(SettingsSection, "AppSecretIOS", out AppSecretIOS);
-            bool bEnableAppCenter = true;// (bEnableAnalytics | bEnableCrashes | bEnableDistribute | bEnablePush) && (AppSecretIOS != "");
+            bool bEnableAppCenter = (bEnableAnalytics | bEnableCrashes | bEnableDistribute | bEnablePush) && (AppSecretIOS != "");
+
+            PublicDefinitions.Add("WITH_APPCENTER=" + (bEnableAppCenter ? "1" : "0"));
+            PublicDefinitions.Add("WITH_APPCENTER_ANALYTICS=" + (bEnableAnalytics ? "1" : "0"));
+            PublicDefinitions.Add("WITH_APPCENTER_CRASHES=" + (bEnableCrashes ? "1" : "0"));
+            PublicDefinitions.Add("WITH_APPCENTER_DISTIBUTE=" + (bEnableDistribute ? "1" : "0"));
+            PublicDefinitions.Add("WITH_APPCENTER_PUSH=" + (bEnablePush ? "1" : "0"));
 
             if (bEnableAppCenter)
             {
-                PublicDefinitions.Add("WITH_APPCENTER=1");
-
                 // The AppCenter.framework is required to start the SDK. If it is not added to the project, 
                 // the other modules won't work and your app won't compile.
                 PublicAdditionalFrameworks.Add(

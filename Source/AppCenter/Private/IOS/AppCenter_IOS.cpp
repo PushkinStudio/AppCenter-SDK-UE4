@@ -10,9 +10,27 @@ THIRD_PARTY_INCLUDES_START
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wobjc-property-no-attribute"
 #pragma clang diagnostic ignored "-Wduplicate-protocol"
+
+#if WITH_APPCENTER
 #import <AppCenter/AppCenter.h>
+#endif
+
+#if WITH_APPCENTER_ANALYTICS
 #import <AppCenterAnalytics/AppCenterAnalytics.h>
+#endif
+
+#if WITH_APPCENTER_CRASHES
 #import <AppCenterCrashes/AppCenterCrashes.h>
+#endif
+
+#if WITH_APPCENTER_DISTIBUTE
+#import <AppCenterDistribute/AppCenterDistribute.h>
+#endif
+
+#if WITH_APPCENTER_PUSH
+#import <AppCenterPush/AppCenterPush.h>
+#endif
+
 #pragma clang diagnostic pop
 THIRD_PARTY_INCLUDES_END
 #endif // PLATFORM_IOS
@@ -49,6 +67,7 @@ static AppCenterObserver* AppCenterObserverInstance = nil;
 
 - (void)didFinishLaunching:(NSNotification*)notification
 {
+#if WITH_APPCENTER
 	NSDictionary* AppCenterDict = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"AppCenter"];
 	if (AppCenterDict == nil)
 	{
@@ -63,14 +82,31 @@ static AppCenterObserver* AppCenterObserverInstance = nil;
 	}
 
 	NSMutableArray* AppCenterModules = [[NSMutableArray alloc] init];
-	[AppCenterModules addObject:[MSAnalytics class]];
-	[AppCenterModules addObject:[MSCrashes class]];
 
-	[MSAppCenter start:AppSecret withServices:AppCenterModules];
+#if WITH_APPCENTER_ANALYTICS
+	[AppCenterModules addObject:[MSAnalytics class]];
+#endif
+
+#if WITH_APPCENTER_CRASHES
+	[AppCenterModules addObject:[MSCrashes class]];
+#endif
+
+#if WITH_APPCENTER_DISTIBUTE
+	[AppCenterModules addObject:[MSDistribute class]];
+#endif
+
+#if WITH_APPCENTER_PUSH
+	[AppCenterModules addObject:[MSPush class]];
+#endif
+
+	[MSAppCenter start:AppSecret
+		  withServices:AppCenterModules];
+
+#endif // WITH_APPCENTER
 }
 
 @end
-#endif // PLATFORM_IOS
+#endif // PLATFORM_IOS && WITH_APPCENTER
 
 UAppCenter_IOS::UAppCenter_IOS(const FObjectInitializer& ObjectInitializer)
 	: Super(ObjectInitializer)
