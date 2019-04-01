@@ -47,6 +47,7 @@ UAppCenter_Android::UAppCenter_Android(const FObjectInitializer& ObjectInitializ
 
 #if PLATFORM_ANDROID
 
+#if WITH_APPCENTER_CRASHES
 void UAppCenter_Android::GenerateTestCrash()
 {
 	if (JNIEnv* Env = FAndroidApplication::GetJavaEnv())
@@ -71,5 +72,6 @@ bool UAppCenter_Android::HasCrashedInLastSession()
 
 	return false;
 }
+#endif // WITH_APPCENTER_CRASHES
 
 #endif // PLATFORM_ANDROID

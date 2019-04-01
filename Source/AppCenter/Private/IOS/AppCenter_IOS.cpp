@@ -115,6 +115,7 @@ UAppCenter_IOS::UAppCenter_IOS(const FObjectInitializer& ObjectInitializer)
 
 #if PLATFORM_IOS
 
+#if WITH_APPCENTER_CRASHES
 void UAppCenter_IOS::GenerateTestCrash()
 {
 	[MSCrashes generateTestCrash];
@@ -124,5 +125,6 @@ void UAppCenter_IOS::GenerateNativeCrash()
 {
 	abort();
 }
+#endif // WITH_APPCENTER_CRASHES
 
 #endif // PLATFORM_IOS
