@@ -20,7 +20,6 @@ void UAppCenterProxy::SetLogLevel(EAppCenterLogLevel LogLevel)
 FString UAppCenterProxy::GetInstallId()
 {
 	UE_LOG(LogAppCenter, Warning, TEXT("%s: Not implemented yet"), *PS_FUNC_LINE);
-
 	return FString();
 }
 
@@ -29,44 +28,71 @@ void UAppCenterProxy::SetUserId()
 	UE_LOG(LogAppCenter, Warning, TEXT("%s: Not implemented yet"), *PS_FUNC_LINE);
 }
 
-void UAppCenterProxy::SetEnabled()
+void UAppCenterProxy::SetEnabled(bool bEnabled)
 {
-	UE_LOG(LogAppCenter, Warning, TEXT("%s: Not implemented yet"), *PS_FUNC_LINE);
+	UE_LOG(LogAppCenter, Warning, TEXT("%s: Not implemented yet: %s"), *PS_FUNC_LINE, bEnabled ? TEXT("True") : TEXT("False"));
 }
 
 bool UAppCenterProxy::IsEnabled()
 {
 	UE_LOG(LogAppCenter, Warning, TEXT("%s: Not implemented yet"), *PS_FUNC_LINE);
-
 	return true;
 }
 
 FString UAppCenterProxy::GetSdkVersion()
 {
 	UE_LOG(LogAppCenter, Warning, TEXT("%s: Not implemented yet"), *PS_FUNC_LINE);
-
 	return FString();
 }
 
-void UAppCenterProxy::SetCustomProperties(/** @TODO */)
+void UAppCenterProxy::SetCustomProperties()
 {
 	UE_LOG(LogAppCenter, Warning, TEXT("%s: Not implemented yet"), *PS_FUNC_LINE);
 }
 
-void UAppCenterProxy::ClearCustomProperties(/** @TODO */)
+void UAppCenterProxy::ClearCustomProperties()
 {
 	UE_LOG(LogAppCenter, Warning, TEXT("%s: Not implemented yet"), *PS_FUNC_LINE);
 }
 
 /////////////////////////////////////////////////////////////////////////
+// Analytics
+
+void UAppCenterProxy::TrackEvent(FString Event, EAppCenterEventPersistence EventPersistence)
+{
+	UE_LOG(LogAppCenter, Warning, TEXT("%s: Not implemented yet: %s (%d)"), *PS_FUNC_LINE, *Event, static_cast<int32>(EventPersistence));
+}
+
+void UAppCenterProxy::PauseAnalytics()
+{
+	UE_LOG(LogAppCenter, Warning, TEXT("%s: Not implemented yet"), *PS_FUNC_LINE);
+}
+
+void UAppCenterProxy::ResumeAnalytics()
+{
+	UE_LOG(LogAppCenter, Warning, TEXT("%s: Not implemented yet"), *PS_FUNC_LINE);
+}
+
+void UAppCenterProxy::SetAnalyticsEnabled(bool bEnabled)
+{
+	UE_LOG(LogAppCenter, Warning, TEXT("%s: Not implemented yet: %s"), *PS_FUNC_LINE, bEnabled ? TEXT("True") : TEXT("False"));
+}
+
+bool UAppCenterProxy::IsAnalyticsEnabled()
+{
+	UE_LOG(LogAppCenter, Warning, TEXT("%s: Not implemented yet"), *PS_FUNC_LINE);
+	return false;
+}
+
+/////////////////////////////////////////////////////////////////////////
 // Crashes
 
-void UAppCenterProxy::TestCrash()
+void UAppCenterProxy::GenerateTestCrash()
 {
 	UE_LOG(LogAppCenter, Warning, TEXT("%s: Null proxy used"), *PS_FUNC_LINE);
 }
 
-void UAppCenterProxy::TestNativeCrash()
+void UAppCenterProxy::GenerateNativeCrash()
 {
 	UE_LOG(LogAppCenter, Warning, TEXT("%s: Null proxy used"), *PS_FUNC_LINE);
 }
@@ -74,5 +100,22 @@ void UAppCenterProxy::TestNativeCrash()
 bool UAppCenterProxy::HasCrashedInLastSession()
 {
 	UE_LOG(LogAppCenter, Warning, TEXT("%s: Null proxy used"), *PS_FUNC_LINE);
+	return false;
+}
+
+FAppCenterErrorReport UAppCenterProxy::GetLastSessionCrashReport()
+{
+	UE_LOG(LogAppCenter, Warning, TEXT("%s: Not implemented yet"), *PS_FUNC_LINE);
+	return FAppCenterErrorReport();
+}
+
+void UAppCenterProxy::SetCrashesEnabled(bool bEnabled)
+{
+	UE_LOG(LogAppCenter, Warning, TEXT("%s: Not implemented yet: %s"), *PS_FUNC_LINE, bEnabled ? TEXT("True") : TEXT("False"));
+}
+
+bool UAppCenterProxy::IsCrashesEnabled()
+{
+	UE_LOG(LogAppCenter, Warning, TEXT("%s: Not implemented yet"), *PS_FUNC_LINE);
 	return false;
 }

@@ -142,11 +142,11 @@
               <![CDATA[
               native void setUpBreakpad(String path);
 
-              public void AndroidThunkJava_TestCrash()
+              public void AndroidThunkJava_GenerateTestCrash()
               {
                 Crashes.generateTestCrash();
               }
-              
+
               public boolean AndroidThunkJava_HasCrashedInLastSession()
               {
                 return Crashes.hasCrashedInLastSession().get();

@@ -12,8 +12,8 @@ class UAppCenter_Android : public UAppCenterProxy
 	GENERATED_UCLASS_BODY()
 
 #if PLATFORM_ANDROID
-	virtual void TestCrash() override;
-	virtual void TestNativeCrash() override;
+	virtual void GenerateTestCrash() override;
+	virtual void GenerateNativeCrash() override;
 	virtual bool HasCrashedInLastSession() override;
 #endif
 };

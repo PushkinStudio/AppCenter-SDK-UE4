@@ -115,12 +115,12 @@ UAppCenter_IOS::UAppCenter_IOS(const FObjectInitializer& ObjectInitializer)
 
 #if PLATFORM_IOS
 
-void UAppCenter_IOS::TestCrash()
+void UAppCenter_IOS::GenerateTestCrash()
 {
 	[MSCrashes generateTestCrash];
 }
 
-void UAppCenter_IOS::TestNativeCrash()
+void UAppCenter_IOS::GenerateNativeCrash()
 {
 	abort();
 }

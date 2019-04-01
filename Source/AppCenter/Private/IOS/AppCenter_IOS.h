@@ -18,8 +18,8 @@ class UAppCenter_IOS : public UAppCenterProxy
 	GENERATED_UCLASS_BODY()
 
 #if PLATFORM_IOS
-	virtual void TestCrash() override;
-	virtual void TestNativeCrash() override;
+	virtual void GenerateTestCrash() override;
+	virtual void GenerateNativeCrash() override;
 #endif
 };
 // clang-format on

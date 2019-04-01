@@ -30,8 +30,36 @@ public class AppCenter : ModuleRules
 			}
             );
 
+        // Configure build defines
+        bool bEnableAnalytics = false;
+        bool bEnableCrashes = false;
+        bool bEnableDistribute = false;
+        bool bEnablePush = false;
+        string AppSecretAndroid = "";
+        string AppSecretIOS = "";
+
+        // Read from config
+        ConfigHierarchy Ini = ConfigCache.ReadHierarchy(ConfigHierarchyType.Engine, Target.ProjectFile.Directory, Target.Platform);
+
+        string SettingsSection = "/Script/AppCenter.AppCenterSettings";
+        Ini.GetBool(SettingsSection, "bEnableAnalytics", out bEnableAnalytics);
+        Ini.GetBool(SettingsSection, "bEnableCrashes", out bEnableCrashes);
+        Ini.GetBool(SettingsSection, "bEnableDistribute", out bEnableDistribute);
+        Ini.GetBool(SettingsSection, "bEnablePush", out bEnablePush);
+        Ini.GetString(SettingsSection, "AppSecretAndroid", out AppSecretAndroid);
+        Ini.GetString(SettingsSection, "AppSecretIOS", out AppSecretIOS);
+        bool bAnyModuleEnabled = (bEnableAnalytics | bEnableCrashes | bEnableDistribute | bEnablePush);
+
+        PublicDefinitions.Add("WITH_APPCENTER_ANALYTICS=" + (bEnableAnalytics ? "1" : "0"));
+        PublicDefinitions.Add("WITH_APPCENTER_CRASHES=" + (bEnableCrashes ? "1" : "0"));
+        PublicDefinitions.Add("WITH_APPCENTER_DISTIBUTE=" + (bEnableDistribute ? "1" : "0"));
+        PublicDefinitions.Add("WITH_APPCENTER_PUSH=" + (bEnablePush ? "1" : "0"));
+
         if (Target.Platform == UnrealTargetPlatform.Android)
         {
+            // @TODO https://github.com/PushkinStudio/AppCenter-SDK-UE4/issues/5
+            PublicDefinitions.Add("WITH_APPCENTER=1");
+
             PrivateIncludePaths.Add("AppCenter/Private/Android");
 
             PublicDependencyModuleNames.AddRange(new string[] { "Launch" });
@@ -53,38 +81,16 @@ public class AppCenter : ModuleRules
             PublicLibraryPaths.Add(Path.Combine(ThirdPartyPath, "Breakpad", "lib", "armeabi-v7a"));
             PublicLibraryPaths.Add(Path.Combine(ThirdPartyPath, "Breakpad", "lib", "arm64-v8a"));
             PublicAdditionalLibraries.Add("breakpad_client");
-
-            PublicDefinitions.Add("WITH_APPCENTER=1");
         }
         else if (Target.Platform == UnrealTargetPlatform.IOS)
         {
+            bool bEnableAppCenter = bAnyModuleEnabled && (AppSecretIOS != "");
+            PublicDefinitions.Add("WITH_APPCENTER=" + (bEnableAppCenter ? "1" : "0"));
+
             PrivateIncludePaths.Add("AppCenter/Private/IOS");
 
             string PluginPath = Utils.MakePathRelativeTo(ModuleDirectory, Target.RelativeEnginePath);
             AdditionalPropertiesForReceipt.Add("IOSPlugin", Path.Combine(PluginPath, "AppCenter_UPL_IOS.xml"));
-
-            bool bEnableAnalytics = false;
-            bool bEnableCrashes = false;
-            bool bEnableDistribute = false;
-            bool bEnablePush = false;
-            string AppSecretIOS = "";
-
-            // Read from config
-            ConfigHierarchy Ini = ConfigCache.ReadHierarchy(ConfigHierarchyType.Engine, Target.ProjectFile.Directory, Target.Platform);
-
-            string SettingsSection = "/Script/AppCenter.AppCenterSettings";
-            Ini.GetBool(SettingsSection, "bEnableAnalytics", out bEnableAnalytics);
-            Ini.GetBool(SettingsSection, "bEnableCrashes", out bEnableCrashes);
-            Ini.GetBool(SettingsSection, "bEnableDistribute", out bEnableDistribute);
-            Ini.GetBool(SettingsSection, "bEnablePush", out bEnablePush);
-            Ini.GetString(SettingsSection, "AppSecretIOS", out AppSecretIOS);
-            bool bEnableAppCenter = (bEnableAnalytics | bEnableCrashes | bEnableDistribute | bEnablePush) && (AppSecretIOS != "");
-
-            PublicDefinitions.Add("WITH_APPCENTER=" + (bEnableAppCenter ? "1" : "0"));
-            PublicDefinitions.Add("WITH_APPCENTER_ANALYTICS=" + (bEnableAnalytics ? "1" : "0"));
-            PublicDefinitions.Add("WITH_APPCENTER_CRASHES=" + (bEnableCrashes ? "1" : "0"));
-            PublicDefinitions.Add("WITH_APPCENTER_DISTIBUTE=" + (bEnableDistribute ? "1" : "0"));
-            PublicDefinitions.Add("WITH_APPCENTER_PUSH=" + (bEnablePush ? "1" : "0"));
 
             if (bEnableAppCenter)
             {
