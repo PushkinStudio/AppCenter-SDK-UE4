@@ -12,9 +12,9 @@ UAppCenterProxy::UAppCenterProxy(const FObjectInitializer& ObjectInitializer)
 /////////////////////////////////////////////////////////////////////////
 // AppCenter Other APIs
 
-void UAppCenterProxy::SetLogLevel(EAppCenterLogLevel LogLevel)
+void UAppCenterProxy::SetLogLevel(EAppCenterLogLevel InLogLevel)
 {
-	UE_LOG(LogAppCenter, Warning, TEXT("%s: Not implemented yet: %d"), *PS_FUNC_LINE, static_cast<int32>(LogLevel));
+	UE_LOG(LogAppCenter, Warning, TEXT("%s: Not implemented yet: %d"), *PS_FUNC_LINE, static_cast<int32>(InLogLevel));
 }
 
 FString UAppCenterProxy::GetInstallId()

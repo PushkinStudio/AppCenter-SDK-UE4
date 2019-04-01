@@ -16,7 +16,7 @@ class APPCENTER_API UAppCenterProxy : public UObject
 public:
 	/** You can control the amount of log messages that show up from App Center in the console. */
 	UFUNCTION(BlueprintCallable, Category = "AppCenter|Other APIs")
-	virtual void SetLogLevel(EAppCenterLogLevel LogLevel);
+	virtual void SetLogLevel(EAppCenterLogLevel InLogLevel);
 
 	/** The App Center SDK creates a UUID for each device once the app is installed. This identifier remains the same for a device when the app is updated and a new one is generated only when the app is re-installed. */
 	UFUNCTION(BlueprintPure, Category = "AppCenter|Other APIs")
