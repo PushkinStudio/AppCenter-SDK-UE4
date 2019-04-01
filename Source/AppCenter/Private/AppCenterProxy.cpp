@@ -58,7 +58,7 @@ void UAppCenterProxy::ClearCustomProperties()
 /////////////////////////////////////////////////////////////////////////
 // Analytics
 
-void UAppCenterProxy::TrackEvent(FString Event, EAppCenterEventPersistence EventPersistence)
+void UAppCenterProxy::TrackEvent(FString Event, const TMap<FString, FString>& Properties, EAppCenterEventPersistence EventPersistence)
 {
 	UE_LOG(LogAppCenter, Warning, TEXT("%s: Not implemented yet: %s (%d)"), *PS_FUNC_LINE, *Event, static_cast<int32>(EventPersistence));
 }
