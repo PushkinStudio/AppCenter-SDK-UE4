@@ -146,6 +146,11 @@
               {
                 Crashes.generateTestCrash();
               }
+              
+              public boolean AndroidThunkJava_HasCrashedInLastSession()
+              {
+                return Crashes.hasCrashedInLastSession().get();
+              }
               ]]>
             </insert>
           </true>
