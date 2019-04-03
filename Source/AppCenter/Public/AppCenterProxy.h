@@ -57,11 +57,11 @@ public:
 
 	/** App Center allows you to define custom properties as key value pairs in your app. You may use custom properties for various purposes. */
 	UFUNCTION(BlueprintCallable, Category = "AppCenter|Other APIs")
-	virtual void SetCustomPropertyAsBool(const FString& Key, bool Value);
+	virtual void SetCustomPropertyAsFloat(const FString& Key, float Value);
 
 	/** App Center allows you to define custom properties as key value pairs in your app. You may use custom properties for various purposes. */
 	UFUNCTION(BlueprintCallable, Category = "AppCenter|Other APIs")
-	virtual void SetCustomPropertyAsFloat(const FString& Key, float Value);
+	virtual void SetCustomPropertyAsBool(const FString& Key, bool Value);
 
 	/** You may remove any custom property. This will only remove the value of the property for a device. It will not remove the property name from App Center portal. */
 	UFUNCTION(BlueprintCallable, Category = "AppCenter|Other APIs")
@@ -73,7 +73,7 @@ public:
 
 	/////////////////////////////////////////////////////////////////////////
 	// Analytics
-
+public:
 	/**
 	 * You can track your own custom events with up to twenty properties to understand the interaction between your users and the app. 
 	 *

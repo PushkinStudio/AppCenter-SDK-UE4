@@ -94,6 +94,7 @@
 
         <insert>
           import com.microsoft.appcenter.AppCenter;
+          import com.microsoft.appcenter.CustomProperties;
         </insert>
 
         <if condition="bEnableAnalytics">
@@ -136,10 +137,55 @@
   <gameActivityClassAdditions>
     <if condition="isAppCenterEnabled">
       <true>
+        <insert>
+          <![CDATA[
+          /////////////////////////////////////////////////////////////////////////
+          // Other APIs
+          
+          public void AndroidThunkJava_SetCustomPropertyAsString(String Key, String Value)
+          {
+            CustomProperties properties = new CustomProperties();
+            properties.set(Key, Value);
+            AppCenter.setCustomProperties(properties);
+          }
+          
+          public void AndroidThunkJava_SetCustomPropertyAsInt(String Key, int Value)
+          {
+            CustomProperties properties = new CustomProperties();
+            properties.set(Key, Value);
+            AppCenter.setCustomProperties(properties);
+          }
+          
+          public void AndroidThunkJava_SetCustomPropertyAsFloat(String Key, float Value)
+          {
+            CustomProperties properties = new CustomProperties();
+            properties.set(Key, Value);
+            AppCenter.setCustomProperties(properties);
+          }
+          
+          public void AndroidThunkJava_SetCustomPropertyAsBool(String Key, boolean Value)
+          {
+            CustomProperties properties = new CustomProperties();
+            properties.set(Key, Value);
+            AppCenter.setCustomProperties(properties);
+          }
+
+          public void AndroidThunkJava_ClearCustomProperty(String Key)
+          {
+            CustomProperties properties = new CustomProperties();
+            properties.clear(Key);
+            AppCenter.setCustomProperties(properties);
+          }
+          ]]>
+        </insert>
+
         <if condition="bEnableCrashes">
           <true>
             <insert>
               <![CDATA[
+              /////////////////////////////////////////////////////////////////////////
+              // Crashes
+              
               native void setUpBreakpad(String path);
 
               public void AndroidThunkJava_GenerateTestCrash()

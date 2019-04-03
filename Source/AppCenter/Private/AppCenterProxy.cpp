@@ -52,32 +52,32 @@ void UAppCenterProxy::SetCustomProperties(const FString& CustomPropertiesJson)
 
 void UAppCenterProxy::SetCustomPropertyAsString(const FString& Key, const FString& Value)
 {
-	UE_LOG(LogAppCenter, Warning, TEXT("%s: Not implemented yet"), *PS_FUNC_LINE);
+	UE_LOG(LogAppCenter, Warning, TEXT("%s: Null proxy used"), *PS_FUNC_LINE);
 }
 
 void UAppCenterProxy::SetCustomPropertyAsInt(const FString& Key, int32 Value)
 {
-	UE_LOG(LogAppCenter, Warning, TEXT("%s: Not implemented yet"), *PS_FUNC_LINE);
-}
-
-void UAppCenterProxy::SetCustomPropertyAsBool(const FString& Key, bool Value)
-{
-	UE_LOG(LogAppCenter, Warning, TEXT("%s: Not implemented yet"), *PS_FUNC_LINE);
+	UE_LOG(LogAppCenter, Warning, TEXT("%s: Null proxy used"), *PS_FUNC_LINE);
 }
 
 void UAppCenterProxy::SetCustomPropertyAsFloat(const FString& Key, float Value)
 {
-	UE_LOG(LogAppCenter, Warning, TEXT("%s: Not implemented yet"), *PS_FUNC_LINE);
+	UE_LOG(LogAppCenter, Warning, TEXT("%s: Null proxy used"), *PS_FUNC_LINE);
+}
+
+void UAppCenterProxy::SetCustomPropertyAsBool(const FString& Key, bool Value)
+{
+	UE_LOG(LogAppCenter, Warning, TEXT("%s: Null proxy used"), *PS_FUNC_LINE);
 }
 
 void UAppCenterProxy::ClearCustomProperties(const TArray<FString>& Keys)
 {
-	UE_LOG(LogAppCenter, Warning, TEXT("%s: Not implemented yet"), *PS_FUNC_LINE);
+	UE_LOG(LogAppCenter, Warning, TEXT("%s: Null proxy used"), *PS_FUNC_LINE);
 }
 
 void UAppCenterProxy::ClearCustomProperty(const FString& Key)
 {
-	UE_LOG(LogAppCenter, Warning, TEXT("%s: Not implemented yet"), *PS_FUNC_LINE);
+	UE_LOG(LogAppCenter, Warning, TEXT("%s: Null proxy used"), *PS_FUNC_LINE);
 }
 
 /////////////////////////////////////////////////////////////////////////

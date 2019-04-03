@@ -56,15 +56,16 @@ dumpBreakpadSymbols()
         printUsageExit "Platform arcitecture not set"
     fi
 
+	# Prepare directory to store symbols
+	ANDROID_DIR="Intermediate/Android"
+	pushd $ANDROID_DIR
+
 	ARCH=$2
+
 	SO_DIR="libs"
 	SO_ZIP="libs.zip"
 	rm -rf $SO_DIR
 	mkdir -p $SO_DIR
-
-	# Prepare directory to store symbols
-	ANDROID_DIR="Intermediate/Android"
-	pushd $ANDROID_DIR
 
 	SYMBOLS_DIR="symbols"
 	SYMBOLS_ZIP="symbols.zip"

@@ -47,6 +47,76 @@ UAppCenter_Android::UAppCenter_Android(const FObjectInitializer& ObjectInitializ
 
 #if PLATFORM_ANDROID
 
+/////////////////////////////////////////////////////////////////////////
+// AppCenter Other APIs
+
+#if WITH_APPCENTER
+void UAppCenter_Android::SetCustomPropertyAsString(const FString& Key, const FString& Value)
+{
+	if (JNIEnv* Env = FAndroidApplication::GetJavaEnv())
+	{
+		jstring KeyJava = Env->NewStringUTF(TCHAR_TO_UTF8(*Key));
+		jstring ValueJava = Env->NewStringUTF(TCHAR_TO_UTF8(*Value));
+		static jmethodID Method = FJavaWrapper::FindMethod(Env, FJavaWrapper::GameActivityClassID, "AndroidThunkJava_SetCustomPropertyAsString", "(Ljava/lang/String;Ljava/lang/String;)V", false);
+		FJavaWrapper::CallVoidMethod(Env, FJavaWrapper::GameActivityThis, Method, KeyJava, ValueJava);
+		Env->DeleteLocalRef(KeyJava);
+		Env->DeleteLocalRef(ValueJava);
+	}
+}
+
+void UAppCenter_Android::SetCustomPropertyAsInt(const FString& Key, int32 Value)
+{
+	if (JNIEnv* Env = FAndroidApplication::GetJavaEnv())
+	{
+		jstring KeyJava = Env->NewStringUTF(TCHAR_TO_UTF8(*Key));
+		static jmethodID Method = FJavaWrapper::FindMethod(Env, FJavaWrapper::GameActivityClassID, "AndroidThunkJava_SetCustomPropertyAsInt", "(Ljava/lang/String;I)V", false);
+		FJavaWrapper::CallVoidMethod(Env, FJavaWrapper::GameActivityThis, Method, KeyJava, Value);
+		Env->DeleteLocalRef(KeyJava);
+	}
+}
+
+void UAppCenter_Android::SetCustomPropertyAsFloat(const FString& Key, float Value)
+{
+	if (JNIEnv* Env = FAndroidApplication::GetJavaEnv())
+	{
+		jstring KeyJava = Env->NewStringUTF(TCHAR_TO_UTF8(*Key));
+		static jmethodID Method = FJavaWrapper::FindMethod(Env, FJavaWrapper::GameActivityClassID, "AndroidThunkJava_SetCustomPropertyAsFloat", "(Ljava/lang/String;F)V", false);
+		FJavaWrapper::CallVoidMethod(Env, FJavaWrapper::GameActivityThis, Method, KeyJava, Value);
+		Env->DeleteLocalRef(KeyJava);
+	}
+}
+
+void UAppCenter_Android::SetCustomPropertyAsBool(const FString& Key, bool Value)
+{
+	if (JNIEnv* Env = FAndroidApplication::GetJavaEnv())
+	{
+		jstring KeyJava = Env->NewStringUTF(TCHAR_TO_UTF8(*Key));
+		static jmethodID Method = FJavaWrapper::FindMethod(Env, FJavaWrapper::GameActivityClassID, "AndroidThunkJava_SetCustomPropertyAsBool", "(Ljava/lang/String;Z)V", false);
+		FJavaWrapper::CallVoidMethod(Env, FJavaWrapper::GameActivityThis, Method, KeyJava, Value);
+		Env->DeleteLocalRef(KeyJava);
+	}
+}
+
+void UAppCenter_Android::ClearCustomProperties(const TArray<FString>& Keys)
+{
+	UE_LOG(LogAppCenter, Warning, TEXT("%s: Not implemented yet"), *PS_FUNC_LINE);
+}
+
+void UAppCenter_Android::ClearCustomProperty(const FString& Key)
+{
+	if (JNIEnv* Env = FAndroidApplication::GetJavaEnv())
+	{
+		jstring KeyJava = Env->NewStringUTF(TCHAR_TO_UTF8(*Key));
+		static jmethodID Method = FJavaWrapper::FindMethod(Env, FJavaWrapper::GameActivityClassID, "AndroidThunkJava_ClearCustomProperty", "(Ljava/lang/String;)V", false);
+		FJavaWrapper::CallVoidMethod(Env, FJavaWrapper::GameActivityThis, Method, KeyJava);
+		Env->DeleteLocalRef(KeyJava);
+	}
+}
+#endif // WITH_APPCENTER
+
+/////////////////////////////////////////////////////////////////////////
+// Crashes
+
 #if WITH_APPCENTER_CRASHES
 void UAppCenter_Android::GenerateTestCrash()
 {
