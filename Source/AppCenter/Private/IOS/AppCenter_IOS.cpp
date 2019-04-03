@@ -128,7 +128,7 @@ void UAppCenter_IOS::TrackEvent(const FString& EventName, const TMap<FString, FS
 	}
 
 	MSFlags PersistenceFlags = (EventPersistence == EAppCenterEventPersistence::PERSISTENCE_CRITICAL) ? MSFlagsPersistenceCritical : MSFlagsPersistenceNormal;
-	[MSAnalytics trackEvent:Event.GetNSString() withProperties:PropertiesDictionary flags:PersistenceFlags];
+	[MSAnalytics trackEvent:EventName.GetNSString() withProperties:PropertiesDictionary flags:PersistenceFlags];
 }
 #endif // WITH_APPCENTER_ANALYTICS
 
