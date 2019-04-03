@@ -188,7 +188,7 @@
 
               public void AndroidThunkJava_TrackEvent(String EventName, HashMap<String, String> Properties, int Persistence)
               {
-                Analytics.trackEvent(EventName, Properties);
+                Analytics.trackEvent(EventName, Properties, Persistence);
               }
               ]]>
             </insert>
