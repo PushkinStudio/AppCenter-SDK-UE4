@@ -81,7 +81,7 @@ static AppCenterObserver* AppCenterObserverInstance = nil;
 		return;
 	}
 
-	NSMutableArray* AppCenterModules = [[NSMutableArray alloc] init];
+	NSMutableArray* AppCenterModules = [[[NSMutableArray alloc] init] autorelease];
 
 #if WITH_APPCENTER_ANALYTICS
 	[AppCenterModules addObject:[MSAnalytics class]];
@@ -114,6 +114,25 @@ UAppCenter_IOS::UAppCenter_IOS(const FObjectInitializer& ObjectInitializer)
 }
 
 #if PLATFORM_IOS
+
+/////////////////////////////////////////////////////////////////////////
+// Analytics
+
+#if WITH_APPCENTER_ANALYTICS
+void UAppCenter_IOS::TrackEvent(const FString& EventName, const TMap<FString, FString>& Properties, EAppCenterEventPersistence EventPersistence)
+{
+	NSMutableDictionary* PropertiesDictionary = [[[NSMutableDictionary alloc] init] autorelease];
+	for (const auto& Elem : Properties)
+	{
+		[PropertiesDictionary setValue:Elem.Value.GetNSString() forKey:Elem.Key.GetNSString()];
+	}
+
+	[MSAnalytics trackEvent:Event.GetNSString() withProperties:PropertiesDictionary];
+}
+#endif // WITH_APPCENTER_ANALYTICS
+
+/////////////////////////////////////////////////////////////////////////
+// Crashes
 
 #if WITH_APPCENTER_CRASHES
 void UAppCenter_IOS::GenerateTestCrash()
