@@ -141,28 +141,28 @@
           <![CDATA[
           /////////////////////////////////////////////////////////////////////////
           // Other APIs
-          
+
           public void AndroidThunkJava_SetCustomPropertyAsString(String Key, String Value)
           {
             CustomProperties properties = new CustomProperties();
             properties.set(Key, Value);
             AppCenter.setCustomProperties(properties);
           }
-          
+
           public void AndroidThunkJava_SetCustomPropertyAsInt(String Key, int Value)
           {
             CustomProperties properties = new CustomProperties();
             properties.set(Key, Value);
             AppCenter.setCustomProperties(properties);
           }
-          
+
           public void AndroidThunkJava_SetCustomPropertyAsFloat(String Key, float Value)
           {
             CustomProperties properties = new CustomProperties();
             properties.set(Key, Value);
             AppCenter.setCustomProperties(properties);
           }
-          
+
           public void AndroidThunkJava_SetCustomPropertyAsBool(String Key, boolean Value)
           {
             CustomProperties properties = new CustomProperties();
@@ -179,13 +179,29 @@
           ]]>
         </insert>
 
+        <if condition="bEnableAnalytics">
+          <true>
+            <insert>
+              <![CDATA[
+              /////////////////////////////////////////////////////////////////////////
+              // Analytics
+
+              public void AndroidThunkJava_TrackEvent(String EventName, HashMap<String, String> Properties, int Persistence)
+              {
+                Analytics.trackEvent(EventName, Properties);
+              }
+              ]]>
+            </insert>
+          </true>
+        </if>
+
         <if condition="bEnableCrashes">
           <true>
             <insert>
               <![CDATA[
               /////////////////////////////////////////////////////////////////////////
               // Crashes
-              
+
               native void setUpBreakpad(String path);
 
               public void AndroidThunkJava_GenerateTestCrash()

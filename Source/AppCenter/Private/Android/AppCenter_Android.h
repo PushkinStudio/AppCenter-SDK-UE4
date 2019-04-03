@@ -22,6 +22,10 @@ class UAppCenter_Android : public UAppCenterProxy
 	virtual void ClearCustomProperty(const FString& Key) override;
 #endif // WITH_APPCENTER
 
+#if WITH_APPCENTER_ANALYTICS
+	virtual void TrackEvent(FString Event, const TMap<FString, FString>& Properties, EAppCenterEventPersistence EventPersistence = EAppCenterEventPersistence::PERSISTENCE_NORMAL) override;
+#endif // WITH_APPCENTER_ANALYTICS
+
 #if WITH_APPCENTER_CRASHES
 	virtual void GenerateTestCrash() override;
 	virtual void GenerateNativeCrash() override;

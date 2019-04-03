@@ -115,6 +115,41 @@ void UAppCenter_Android::ClearCustomProperty(const FString& Key)
 #endif // WITH_APPCENTER
 
 /////////////////////////////////////////////////////////////////////////
+// Analytics
+#if WITH_APPCENTER_ANALYTICS
+void UAppCenter_Android::TrackEvent(FString Event, const TMap<FString, FString>& Properties, EAppCenterEventPersistence EventPersistence)
+{
+	if (JNIEnv* Env = FAndroidApplication::GetJavaEnv())
+	{
+		jstring KeyJava = Env->NewStringUTF(TCHAR_TO_UTF8(*Event));
+
+		jclass mapClass = Env->FindClass("java/util/HashMap");
+		jmethodID init = Env->GetMethodID(mapClass, "<init>", "()V");
+		jobject hashMap = Env->NewObject(mapClass, init);
+		jmethodID put = Env->GetMethodID(mapClass, "put", "(Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/Object;");
+
+		for (const auto& Elem : Properties)
+		{
+			jstring keyJava = Env->NewStringUTF(TCHAR_TO_UTF8(*Elem.Key));
+			jstring valueJava = Env->NewStringUTF(TCHAR_TO_UTF8(*Elem.Value));
+
+			Env->CallObjectMethod(hashMap, put, keyJava, valueJava);
+
+			Env->DeleteLocalRef(keyJava);
+			Env->DeleteLocalRef(valueJava);
+		}
+
+		static jmethodID Method = FJavaWrapper::FindMethod(Env, FJavaWrapper::GameActivityClassID, "AndroidThunkJava_TrackEvent", "(Ljava/lang/String;Ljava/util/HashMap;I)V", false);
+		FJavaWrapper::CallVoidMethod(Env, FJavaWrapper::GameActivityThis, Method, KeyJava, hashMap, static_cast<int32>(EventPersistence));
+		
+		Env->DeleteLocalRef(KeyJava);
+		Env->DeleteLocalRef(mapClass);
+		Env->DeleteLocalRef(hashMap);
+	}
+}
+#endif // WITH_APPCENTER_ANALYTICS
+
+/////////////////////////////////////////////////////////////////////////
 // Crashes
 
 #if WITH_APPCENTER_CRASHES
