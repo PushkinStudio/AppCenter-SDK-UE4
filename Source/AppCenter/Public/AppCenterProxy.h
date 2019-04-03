@@ -81,7 +81,7 @@ public:
 	 * @param EventPersistence You can track business critical events that have higher importance than other events.
 	 */
 	UFUNCTION(BlueprintCallable, Category = "AppCenter|Analytics", meta = (AutoCreateRefTerm = "Properties"))
-	virtual void TrackEvent(FString Event, const TMap<FString, FString>& Properties, EAppCenterEventPersistence EventPersistence = EAppCenterEventPersistence::PERSISTENCE_NORMAL);
+	virtual void TrackEvent(const FString& EventName, const TMap<FString, FString>& Properties, EAppCenterEventPersistence EventPersistence = EAppCenterEventPersistence::PERSISTENCE_NORMAL);
 
 	/**
 	 * Pausing the event transmission can be useful in scenarios when the app needs to control the network bandwidth for more business critical needs.
