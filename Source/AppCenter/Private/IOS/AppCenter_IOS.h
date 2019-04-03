@@ -11,6 +11,7 @@
 @end
 #endif // PLATFORM_IOS
 
+// clang-format off
 UCLASS()
 class UAppCenter_IOS : public UAppCenterProxy
 {
@@ -28,3 +29,4 @@ class UAppCenter_IOS : public UAppCenterProxy
 #endif // WITH_APPCENTER_CRASHES
 #endif
 };
+// clang-format on
