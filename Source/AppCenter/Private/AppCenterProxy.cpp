@@ -45,12 +45,37 @@ FString UAppCenterProxy::GetSdkVersion()
 	return FString();
 }
 
-void UAppCenterProxy::SetCustomProperties()
+void UAppCenterProxy::SetCustomProperties(const FString& CustomPropertiesJson)
 {
 	UE_LOG(LogAppCenter, Warning, TEXT("%s: Not implemented yet"), *PS_FUNC_LINE);
 }
 
-void UAppCenterProxy::ClearCustomProperties()
+void UAppCenterProxy::SetCustomPropertyAsString(const FString& Key, const FString& Value)
+{
+	UE_LOG(LogAppCenter, Warning, TEXT("%s: Not implemented yet"), *PS_FUNC_LINE);
+}
+
+void UAppCenterProxy::SetCustomPropertyAsInt(const FString& Key, int32 Value)
+{
+	UE_LOG(LogAppCenter, Warning, TEXT("%s: Not implemented yet"), *PS_FUNC_LINE);
+}
+
+void UAppCenterProxy::SetCustomPropertyAsBool(const FString& Key, bool Value)
+{
+	UE_LOG(LogAppCenter, Warning, TEXT("%s: Not implemented yet"), *PS_FUNC_LINE);
+}
+
+void UAppCenterProxy::SetCustomPropertyAsFloat(const FString& Key, float Value)
+{
+	UE_LOG(LogAppCenter, Warning, TEXT("%s: Not implemented yet"), *PS_FUNC_LINE);
+}
+
+void UAppCenterProxy::ClearCustomProperties(const TArray<FString>& Keys)
+{
+	UE_LOG(LogAppCenter, Warning, TEXT("%s: Not implemented yet"), *PS_FUNC_LINE);
+}
+
+void UAppCenterProxy::ClearCustomProperty(const FString& Key)
 {
 	UE_LOG(LogAppCenter, Warning, TEXT("%s: Not implemented yet"), *PS_FUNC_LINE);
 }
@@ -58,7 +83,7 @@ void UAppCenterProxy::ClearCustomProperties()
 /////////////////////////////////////////////////////////////////////////
 // Analytics
 
-void UAppCenterProxy::TrackEvent(FString Event, EAppCenterEventPersistence EventPersistence)
+void UAppCenterProxy::TrackEvent(FString Event, const TMap<FString, FString>& Properties, EAppCenterEventPersistence EventPersistence)
 {
 	UE_LOG(LogAppCenter, Warning, TEXT("%s: Not implemented yet: %s (%d)"), *PS_FUNC_LINE, *Event, static_cast<int32>(EventPersistence));
 }

@@ -40,14 +40,36 @@ public:
 
 	/**
 	 * App Center allows you to define custom properties as key value pairs in your app. You may use custom properties for various purposes. 
-	 * For instance, you can use custom properties to segment your users, and then send push notifications to a specific audience. 
+	 * For instance, you can use custom properties to segment your users, and then send push notifications to a specific audience.
+	 *
+	 * @param CustomPropertiesJson Map of custom properties as string in json format
 	 */
 	UFUNCTION(BlueprintCallable, Category = "AppCenter|Other APIs")
-	virtual void SetCustomProperties(/** @TODO */);
+	virtual void SetCustomProperties(const FString& CustomPropertiesJson = "{}");
+
+	/** App Center allows you to define custom properties as key value pairs in your app. You may use custom properties for various purposes. */
+	UFUNCTION(BlueprintCallable, Category = "AppCenter|Other APIs")
+	virtual void SetCustomPropertyAsString(const FString& Key, const FString& Value);
+
+	/** App Center allows you to define custom properties as key value pairs in your app. You may use custom properties for various purposes. */
+	UFUNCTION(BlueprintCallable, Category = "AppCenter|Other APIs")
+	virtual void SetCustomPropertyAsInt(const FString& Key, int32 Value);
+
+	/** App Center allows you to define custom properties as key value pairs in your app. You may use custom properties for various purposes. */
+	UFUNCTION(BlueprintCallable, Category = "AppCenter|Other APIs")
+	virtual void SetCustomPropertyAsBool(const FString& Key, bool Value);
+
+	/** App Center allows you to define custom properties as key value pairs in your app. You may use custom properties for various purposes. */
+	UFUNCTION(BlueprintCallable, Category = "AppCenter|Other APIs")
+	virtual void SetCustomPropertyAsFloat(const FString& Key, float Value);
 
 	/** You may remove any custom property. This will only remove the value of the property for a device. It will not remove the property name from App Center portal. */
 	UFUNCTION(BlueprintCallable, Category = "AppCenter|Other APIs")
-	virtual void ClearCustomProperties(/** @TODO */);
+	virtual void ClearCustomProperties(const TArray<FString>& Keys);
+
+	/** You may remove any custom property. This will only remove the value of the property for a device. It will not remove the property name from App Center portal. */
+	UFUNCTION(BlueprintCallable, Category = "AppCenter|Other APIs")
+	virtual void ClearCustomProperty(const FString& Key);
 
 	/////////////////////////////////////////////////////////////////////////
 	// Analytics
@@ -58,8 +80,8 @@ public:
 	 * @param Properties Properties for events are entirely optional
 	 * @param EventPersistence You can track business critical events that have higher importance than other events.
 	 */
-	UFUNCTION(BlueprintCallable, Category = "AppCenter|Analytics")
-	virtual void TrackEvent(FString Event /**, Properties @TODO */, EAppCenterEventPersistence EventPersistence = EAppCenterEventPersistence::PERSISTENCE_NORMAL);
+	UFUNCTION(BlueprintCallable, Category = "AppCenter|Analytics", meta = (AutoCreateRefTerm = "Properties"))
+	virtual void TrackEvent(FString Event, const TMap<FString, FString>& Properties, EAppCenterEventPersistence EventPersistence = EAppCenterEventPersistence::PERSISTENCE_NORMAL);
 
 	/**
 	 * Pausing the event transmission can be useful in scenarios when the app needs to control the network bandwidth for more business critical needs.
