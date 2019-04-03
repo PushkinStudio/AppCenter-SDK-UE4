@@ -116,6 +116,7 @@ void UAppCenter_Android::ClearCustomProperty(const FString& Key)
 
 /////////////////////////////////////////////////////////////////////////
 // Analytics
+
 #if WITH_APPCENTER_ANALYTICS
 void UAppCenter_Android::TrackEvent(FString Event, const TMap<FString, FString>& Properties, EAppCenterEventPersistence EventPersistence)
 {
@@ -141,7 +142,7 @@ void UAppCenter_Android::TrackEvent(FString Event, const TMap<FString, FString>&
 
 		static jmethodID Method = FJavaWrapper::FindMethod(Env, FJavaWrapper::GameActivityClassID, "AndroidThunkJava_TrackEvent", "(Ljava/lang/String;Ljava/util/HashMap;I)V", false);
 		FJavaWrapper::CallVoidMethod(Env, FJavaWrapper::GameActivityThis, Method, KeyJava, hashMap, static_cast<int32>(EventPersistence));
-		
+
 		Env->DeleteLocalRef(KeyJava);
 		Env->DeleteLocalRef(mapClass);
 		Env->DeleteLocalRef(hashMap);
