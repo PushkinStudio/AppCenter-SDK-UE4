@@ -11,11 +11,6 @@ class APPCENTER_API UAppCenterProxy : public UObject
 {
 	GENERATED_UCLASS_BODY()
 
-public:
-	/** Global AppCenterProxy accessor */
-	UFUNCTION(BlueprintCallable, Category = "AppCenter", BlueprintPure)
-	static UAppCenterProxy* Get();
-
 	/////////////////////////////////////////////////////////////////////////
 	// AppCenter Other APIs
 public:

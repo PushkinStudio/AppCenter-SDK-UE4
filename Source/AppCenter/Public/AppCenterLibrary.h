@@ -12,7 +12,7 @@ class APPCENTER_API UAppCenterLibrary : public UBlueprintFunctionLibrary
 	GENERATED_UCLASS_BODY()
 
 public:
-	/** */
+	/** Global AppCenterProxy accessor */
 	UFUNCTION(BlueprintCallable, Category = AppCenter, BlueprintPure)
 	static UAppCenterProxy* GetAppCenterProxy();
 };
