@@ -2,11 +2,17 @@
 
 #include "AppCenterProxy.h"
 
+#include "AppCenter.h"
 #include "AppCenterDefines.h"
 
 UAppCenterProxy::UAppCenterProxy(const FObjectInitializer& ObjectInitializer)
 	: Super(ObjectInitializer)
 {
+}
+
+UAppCenterProxy* UAppCenterProxy::Get()
+{
+	return FAppCenterModule::Get().GetProxy();
 }
 
 /////////////////////////////////////////////////////////////////////////
