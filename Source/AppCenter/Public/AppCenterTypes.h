@@ -17,7 +17,7 @@ enum class EAppCenterLogLevel : uint8
 	/** Debug information will be logged */
 	DEBUG = 3,
 	/** Errors will be logged */
-	ERROR = 6,
+	ERRORR = 6,
 	/** Information will be logged */
 	INFO = 4,
 	/** Logging will be very chatty */
