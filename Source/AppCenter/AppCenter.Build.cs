@@ -88,7 +88,7 @@ public class AppCenter : ModuleRules
                 // The AppCenter.framework is required to start the SDK. If it is not added to the project, 
                 // the other modules won't work and your app won't compile.
                 PublicAdditionalFrameworks.Add(
-                    new Framework(
+                    new UEBuildFramework(
                         "AppCenter",
                         "../../ThirdParty/AppCenter-SDK-Apple/iOS/AppCenter.embeddedframework.zip"
                     )
@@ -97,7 +97,7 @@ public class AppCenter : ModuleRules
                 if (bEnableAnalytics)
                 {
                     PublicAdditionalFrameworks.Add(
-                        new Framework(
+                        new UEBuildFramework(
                             "AppCenterAnalytics",
                             "../../ThirdParty/AppCenter-SDK-Apple/iOS/AppCenterAnalytics.embeddedframework.zip"
                         )
@@ -107,7 +107,7 @@ public class AppCenter : ModuleRules
                 if (bEnableCrashes)
                 {
                     PublicAdditionalFrameworks.Add(
-                        new Framework(
+                        new UEBuildFramework(
                             "AppCenterCrashes",
                             "../../ThirdParty/AppCenter-SDK-Apple/iOS/AppCenterCrashes.embeddedframework.zip"
                         )
@@ -117,7 +117,7 @@ public class AppCenter : ModuleRules
                 if (bEnableDistribute)
                 {
                     PublicAdditionalFrameworks.Add(
-                        new Framework(
+                        new UEBuildFramework(
                             "AppCenterDistribute",
                             "../../ThirdParty/AppCenter-SDK-Apple/iOS/AppCenterDistribute.embeddedframework.zip",
                             "AppCenterDistributeResources.bundle/Info.plist"
@@ -128,7 +128,7 @@ public class AppCenter : ModuleRules
                 if (bEnablePush)
                 {
                     PublicAdditionalFrameworks.Add(
-                        new Framework(
+                        new UEBuildFramework(
                             "AppCenterPush",
                             "../../ThirdParty/AppCenter-SDK-Apple/iOS/AppCenterPush.embeddedframework.zip"
                         )
