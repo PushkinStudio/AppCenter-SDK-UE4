@@ -24,7 +24,7 @@ public:
 
 	/** The App Center SDK supports setting a user ID that is used to augment crash reports. After setting a user ID, you can use App Center's search feature to search for specific crash reports associated with the ID. */
 	UFUNCTION(BlueprintCallable, Category = "AppCenter|Other APIs")
-	virtual void SetUserId();
+	virtual void SetUserId(const FString& UserId);
 
 	/** When disabled, the SDK will not forward any information to App Center. The state is persisted in the device's storage across application launches. */
 	UFUNCTION(BlueprintCallable, Category = "AppCenter|Other APIs")
