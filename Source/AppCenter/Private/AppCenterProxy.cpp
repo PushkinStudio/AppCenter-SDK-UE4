@@ -14,7 +14,7 @@ UAppCenterProxy::UAppCenterProxy(const FObjectInitializer& ObjectInitializer)
 
 void UAppCenterProxy::SetLogLevel(EAppCenterLogLevel InLogLevel)
 {
-	UE_LOG(LogAppCenter, Warning, TEXT("%s: Not implemented yet: %d"), *PS_FUNC_LINE, static_cast<int32>(InLogLevel));
+	UE_LOG(LogAppCenter, Warning, TEXT("%s: Null proxy used: %d"), *PS_FUNC_LINE, static_cast<int32>(InLogLevel));
 }
 
 FString UAppCenterProxy::GetInstallId()
@@ -23,9 +23,9 @@ FString UAppCenterProxy::GetInstallId()
 	return FString();
 }
 
-void UAppCenterProxy::SetUserId()
+void UAppCenterProxy::SetUserId(const FString& UserId)
 {
-	UE_LOG(LogAppCenter, Warning, TEXT("%s: Not implemented yet"), *PS_FUNC_LINE);
+	UE_LOG(LogAppCenter, Warning, TEXT("%s: Not implemented yet: %s"), *PS_FUNC_LINE, *UserId);
 }
 
 void UAppCenterProxy::SetEnabled(bool bEnabled)

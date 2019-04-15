@@ -51,6 +51,17 @@ UAppCenter_Android::UAppCenter_Android(const FObjectInitializer& ObjectInitializ
 // AppCenter Other APIs
 
 #if WITH_APPCENTER
+void UAppCenter_Android::SetUserId(const FString& UserId)
+{
+	if (JNIEnv* Env = FAndroidApplication::GetJavaEnv())
+	{
+		jstring UserIdJava = Env->NewStringUTF(TCHAR_TO_UTF8(*UserId));
+		static jmethodID Method = FJavaWrapper::FindMethod(Env, FJavaWrapper::GameActivityClassID, "AndroidThunkJava_SetUserId", "(Ljava/lang/String;)V", false);
+		FJavaWrapper::CallVoidMethod(Env, FJavaWrapper::GameActivityThis, Method, UserIdJava);
+		Env->DeleteLocalRef(UserIdJava);
+	}
+}
+
 void UAppCenter_Android::SetCustomPropertyAsString(const FString& Key, const FString& Value)
 {
 	if (JNIEnv* Env = FAndroidApplication::GetJavaEnv())

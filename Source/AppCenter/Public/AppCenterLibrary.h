@@ -13,6 +13,6 @@ class APPCENTER_API UAppCenterLibrary : public UBlueprintFunctionLibrary
 
 public:
 	/** Global AppCenterProxy accessor */
-	UFUNCTION(BlueprintCallable, Category = AppCenter, BlueprintPure)
+	UFUNCTION(BlueprintPure, Category = AppCenter, meta = (DisplayName = "Get AppCenter Proxy"))
 	static UAppCenterProxy* GetAppCenterProxy();
 };

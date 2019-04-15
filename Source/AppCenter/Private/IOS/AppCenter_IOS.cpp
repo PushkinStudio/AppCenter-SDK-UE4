@@ -116,6 +116,16 @@ UAppCenter_IOS::UAppCenter_IOS(const FObjectInitializer& ObjectInitializer)
 #if PLATFORM_IOS
 
 /////////////////////////////////////////////////////////////////////////
+// AppCenter Other APIs
+
+#if WITH_APPCENTER
+void UAppCenter_IOS::SetUserId(const FString& UserId)
+{
+	[MSAppCenter setUserId:UserId.GetNSString()];
+}
+#endif // WITH_APPCENTER
+
+/////////////////////////////////////////////////////////////////////////
 // Analytics
 
 #if WITH_APPCENTER_ANALYTICS

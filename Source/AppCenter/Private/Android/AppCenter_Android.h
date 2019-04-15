@@ -14,6 +14,7 @@ class UAppCenter_Android : public UAppCenterProxy
 #if PLATFORM_ANDROID
 
 #if WITH_APPCENTER
+	virtual void SetUserId(const FString& UserId) override;
 	virtual void SetCustomPropertyAsString(const FString& Key, const FString& Value) override;
 	virtual void SetCustomPropertyAsInt(const FString& Key, int32 Value) override;
 	virtual void SetCustomPropertyAsFloat(const FString& Key, float Value) override;

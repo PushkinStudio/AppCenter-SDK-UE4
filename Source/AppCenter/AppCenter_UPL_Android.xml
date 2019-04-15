@@ -142,6 +142,11 @@
           /////////////////////////////////////////////////////////////////////////
           // Other APIs
 
+          public void AndroidThunkJava_SetUserId(String UserId)
+          {
+            AppCenter.setUserId(UserId);
+          }
+
           public void AndroidThunkJava_SetCustomPropertyAsString(String Key, String Value)
           {
             CustomProperties properties = new CustomProperties();
