@@ -120,7 +120,7 @@ public class AppCenter : ModuleRules
                         new Framework(
                             "AppCenterDistribute",
                             "../../ThirdParty/AppCenter-SDK-Apple/iOS/AppCenterDistribute.embeddedframework.zip",
-                            "AppCenterDistributeResources.bundle/Info.plist"
+                            "AppCenterDistributeResources.bundle"
                         )
                     );
                 }
