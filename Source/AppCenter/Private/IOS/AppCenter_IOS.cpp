@@ -72,6 +72,7 @@ static AppCenterObserver* AppCenterObserverInstance = nil;
 	if (AppCenterDict == nil)
 	{
 		NSLog(@"AppCenterSDK: Can't read plist properties.");
+		return;
 	}
 
 	NSString* AppSecret = [AppCenterDict objectForKey:@"AppSecret"];
