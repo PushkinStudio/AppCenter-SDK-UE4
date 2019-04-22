@@ -5,10 +5,14 @@
 #include "AppCenterDefines.h"
 
 #if PLATFORM_ANDROID
+
+#if WITH_APPCENTER
 #include "Android/AndroidApplication.h"
 #include "Android/AndroidJNI.h"
 #include <android_native_app_glue.h>
+#endif // WITH_APPCENTER
 
+#if WITH_APPCENTER_CRASHES
 THIRD_PARTY_INCLUDES_START
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Weverything"
@@ -16,9 +20,6 @@ THIRD_PARTY_INCLUDES_START
 #include "client/linux/handler/minidump_descriptor.h"
 #pragma clang diagnostic pop
 THIRD_PARTY_INCLUDES_END
-#endif // PLATFORM_ANDROID
-
-#if PLATFORM_ANDROID
 
 static google_breakpad::ExceptionHandler* exceptionHandler;
 bool DumpCallback(const google_breakpad::MinidumpDescriptor& descriptor, void* context, bool succeeded)
@@ -37,6 +38,7 @@ JNI_METHOD void Java_com_epicgames_ue4_GameActivity_setUpBreakpad(JNIEnv* env, j
 	exceptionHandler = new google_breakpad::ExceptionHandler(descriptor, NULL, DumpCallback, NULL, true, -1);
 	env->ReleaseStringUTFChars(path, dumpPath);
 }
+#endif // WITH_APPCENTER_CRASHES
 
 #endif // PLATFORM_ANDROID
 
