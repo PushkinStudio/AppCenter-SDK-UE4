@@ -31,10 +31,13 @@ public class AppCenter : ModuleRules
             );
 
         // Configure build defines
+        bool bAppCenterEnabled = false;
         bool bEnableAnalytics = false;
         bool bEnableCrashes = false;
         bool bEnableDistribute = false;
         bool bEnablePush = false;
+        string AppSecretAndroid = "";
+        string AppSecretIOS = "";
 
         // Read from config
         ConfigHierarchy Ini = ConfigCache.ReadHierarchy(ConfigHierarchyType.Engine, Target.ProjectFile.Directory, Target.Platform);
@@ -44,18 +47,16 @@ public class AppCenter : ModuleRules
         Ini.GetBool(SettingsSection, "bEnableCrashes", out bEnableCrashes);
         Ini.GetBool(SettingsSection, "bEnableDistribute", out bEnableDistribute);
         Ini.GetBool(SettingsSection, "bEnablePush", out bEnablePush);
+        Ini.GetString(SettingsSection, "AppSecretAndroid", out AppSecretAndroid);
+        Ini.GetString(SettingsSection, "AppSecretIOS", out AppSecretIOS);
         bool bAnyModuleEnabled = (bEnableAnalytics | bEnableCrashes | bEnableDistribute | bEnablePush);
-
-        PublicDefinitions.Add("WITH_APPCENTER=" + (bAnyModuleEnabled ? "1" : "0"));
-        PublicDefinitions.Add("WITH_APPCENTER_ANALYTICS=" + (bEnableAnalytics ? "1" : "0"));
-        PublicDefinitions.Add("WITH_APPCENTER_CRASHES=" + (bEnableCrashes ? "1" : "0"));
-        PublicDefinitions.Add("WITH_APPCENTER_DISTIBUTE=" + (bEnableDistribute ? "1" : "0"));
-        PublicDefinitions.Add("WITH_APPCENTER_PUSH=" + (bEnablePush ? "1" : "0"));
 
         if(bAnyModuleEnabled)
         {
-            if (Target.Platform == UnrealTargetPlatform.Android)
+            if (Target.Platform == UnrealTargetPlatform.Android && AppSecretAndroid != "")
             {
+                bAppCenterEnabled = true;
+
                 PrivateIncludePaths.Add("AppCenter/Private/Android");
 
                 PublicDependencyModuleNames.AddRange(new string[] { "Launch" });
@@ -78,8 +79,10 @@ public class AppCenter : ModuleRules
                 PublicLibraryPaths.Add(Path.Combine(ThirdPartyPath, "Breakpad", "lib", "arm64-v8a"));
                 PublicAdditionalLibraries.Add("breakpad_client");
             }
-            else if (Target.Platform == UnrealTargetPlatform.IOS)
+            else if (Target.Platform == UnrealTargetPlatform.IOS && AppSecretIOS != "")
             {
+                bAppCenterEnabled = true;
+
                 PrivateIncludePaths.Add("AppCenter/Private/IOS");
 
                 string PluginPath = Utils.MakePathRelativeTo(ModuleDirectory, Target.RelativeEnginePath);
@@ -135,6 +138,24 @@ public class AppCenter : ModuleRules
                     );
                 }
             }
+        }
+
+        // Setup defines based on reality
+        if(bAppCenterEnabled) 
+        {
+            PublicDefinitions.Add("WITH_APPCENTER=" + (bAnyModuleEnabled ? "1" : "0"));
+            PublicDefinitions.Add("WITH_APPCENTER_ANALYTICS=" + (bEnableAnalytics ? "1" : "0"));
+            PublicDefinitions.Add("WITH_APPCENTER_CRASHES=" + (bEnableCrashes ? "1" : "0"));
+            PublicDefinitions.Add("WITH_APPCENTER_DISTIBUTE=" + (bEnableDistribute ? "1" : "0"));
+            PublicDefinitions.Add("WITH_APPCENTER_PUSH=" + (bEnablePush ? "1" : "0"));
+        }
+        else 
+        {
+            PublicDefinitions.Add("WITH_APPCENTER=0");
+            PublicDefinitions.Add("WITH_APPCENTER_ANALYTICS=0");
+            PublicDefinitions.Add("WITH_APPCENTER_CRASHES=0");
+            PublicDefinitions.Add("WITH_APPCENTER_DISTIBUTE=0");
+            PublicDefinitions.Add("WITH_APPCENTER_PUSH=0");
         }
     }
 }
