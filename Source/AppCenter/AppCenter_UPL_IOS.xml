@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- AppCenter plugin additions-->
+<root xmlns:android="http://schemas.ios.com/res/ios">
+  <init>
+    <log text="AppCenter SDK IOS Initialization"/>
+
+    <setBoolFromProperty result="bEnableAnalytics" ini="Engine" section="/Script/AppCenter.AppCenterSettings" property="bEnableAnalytics" default="false"/>
+    <setBoolFromProperty result="bEnableCrashes" ini="Engine" section="/Script/AppCenter.AppCenterSettings" property="bEnableCrashes" default="false"/>
+    <setBoolFromProperty result="bEnableDistribute" ini="Engine" section="/Script/AppCenter.AppCenterSettings" property="bEnableDistribute" default="false"/>
+    <setBoolFromProperty result="bEnablePush" ini="Engine" section="/Script/AppCenter.AppCenterSettings" property="bEnablePush" default="false"/>
+    <setStringFromProperty result="AppSecret" ini="Engine" section="/Script/AppCenter.AppCenterSettings" property="AppSecretIOS" default=""/>
+    <setStringFromProperty result="SdkVersion" ini="Engine" section="/Script/AppCenter.AppCenterSettings" property="SdkVersion" default="1.11.4"/>
+    <setBoolFromProperty result="bDebug" ini="Engine" section="/Script/AppCenter.AppCenterSettings" property="bDebug" default="false"/>
+
+    <!-- Check that we have any AppCenter SDK enabled -->
+    <setBoolIsEqual result="bEmptyAppSecret" arg1="$S(AppSecret)" arg2=""/>
+    <setBoolNot result="bHasSecret" source="$B(bEmptyAppSecret)"/>
+    <setBoolOr result="isAnalyticsOrCrashes" arg1="$B(bEnableAnalytics)" arg2="$B(bEnableCrashes)"/>
+    <setBoolOr result="isDistributeOrPush" arg1="$B(bEnableDistribute)" arg2="$B(bEnablePush)"/>
+    <setBoolOr result="isAnyModuleEnabled" arg1="$B(isAnalyticsOrCrashes)" arg2="$B(isDistributeOrPush)"/>
+    <setBoolAnd result="isAppCenterEnabled" arg1="$B(bHasSecret)" arg2="$B(isAnyModuleEnabled)"/>
+
+    <if condition="bHasSecret">
+      <false>
+        <log text="AppCenter SDK is disabled: please provide AppSecret key in plugin settings"/>
+      </false>
+    </if>
+  </init>
+
+  <iosPListUpdates>
+    <if condition="isAppCenterEnabled">
+      <true>
+
+        <loopElements tag="$">
+          <setStringFromTag result="CurrentTag" tag="$"/>
+          <setBoolIsEqual result="isRootDictionary" arg1="$S(CurrentTag)" arg2="dict"/>
+
+          <!-- Process root dict only -->
+          <if condition="isRootDictionary">
+            <true>
+              <!-- Flag to configure dict we've creaed (will be next element after key tag) -->
+              <setBool result="bAppCenterSearchNextElement" value="false"/>
+
+              <!-- Add AppCenter dict -->
+              <setElement result="AppCenterDict" value="key" text="AppCenter"/>
+              <addElement tag="$" name="AppCenterDict"/>
+              <setElement result="AppCenterDictRoot" value="dict"/>
+              <addElement tag="$" name="AppCenterDictRoot"/>
+
+              <!-- Find dict we added before -->
+              <loopElements tag="$">
+                <setStringFromTagText result="TagValue" tag="$"/>
+                <setBoolIsEqual result="isAppCenter" arg1="$S(TagValue)" arg2="AppCenter"/>
+
+                <if condition="bAppCenterSearchNextElement">
+                  <true>
+                    <setBool result="bAppCenterSearchNextElement" value="false"/>
+
+                    <setElement result="AppSecretKey" value="key" text="AppSecret"/>
+                    <addElement tag="$" name="AppSecretKey"/>
+                    <setElement result="AppSecretValue" value="string" text="$S(AppSecret)"/>
+                    <addElement tag="$" name="AppSecretValue"/>
+                  </true>
+                </if>
+
+                <if condition="isAppCenter">
+                  <true>
+                    <setBool result="bAppCenterSearchNextElement" value="true"/>
+                  </true>
+                </if>
+              </loopElements>
+
+            </true>
+          </if>
+        </loopElements>
+
+        <if condition="bEnableDistribute">
+          <true>
+            <!-- CFBundleURLTypes -->
+            <loopElements tag="$">
+              <setStringFromTag result="CurrentTag" tag="$"/>
+              <setBoolIsEqual result="isRootDictionary" arg1="$S(CurrentTag)" arg2="dict"/>
+
+              <if condition="isRootDictionary">
+                <true>
+                  <setBool result="bCFBundleURLTypesFound" value="false"/>
+                  <setBool result="bCFBundleURLTypesSearchNextElement" value="false"/>
+
+                  <!-- Check that dict is already exists -->
+                  <loopElements tag="$">
+                    <setStringFromTagText result="TagIteratorValue" tag="$"/>
+                    <setBoolIsEqual result="isCFBundleURLTypes" arg1="$S(TagIteratorValue)" arg2="CFBundleURLTypes"/>
+
+                    <if condition="isCFBundleURLTypes">
+                      <true>
+                        <setBool result="bCFBundleURLTypesFound" value="true"/>
+                      </true>
+                    </if>
+                  </loopElements>
+
+                  <!-- Create dict section if now one found -->
+                  <if condition="bCFBundleURLTypesFound">
+                    <false>
+                      <setElement result="dCFBundleURLTypes" value="key" text="CFBundleURLTypes"/>
+                      <addElement tag="$" name="dCFBundleURLTypes"/>
+                      <setElement result="dCFBundleURLTypesRootArray" value="array"/>
+                      <addElement tag="$" name="dCFBundleURLTypesRootArray"/>
+                    </false>
+                  </if>
+
+                  <!-- Ad AppSecret value to dict array -->
+                  <loopElements tag="$">
+                    <setStringFromTagText result="TagIteratorValue" tag="$"/>
+                    <setBoolIsEqual result="isCFBundleURLTypes" arg1="$S(TagIteratorValue)" arg2="CFBundleURLTypes"/>
+
+                    <if condition="bCFBundleURLTypesSearchNextElement">
+                      <true>
+                        <setBool result="bCFBundleURLTypesSearchNextElement" value="false"/>
+
+                        <setElement result="dCFBundleURLTypesDict" value="dict"/>
+
+                        <setElement result="dCFBundleURLSchemes" value="key" text="CFBundleURLSchemes"/>
+                        <addElement tag="$dCFBundleURLTypesDict" name="dCFBundleURLSchemes"/>
+
+                        <setElement result="dCFBundleURLSchemesRootArray" value="array"/>
+
+                        <setElement result="dCFBundleURLSchemesAppCenterSecret" value="string" text="appcenter-$S(AppSecret)"/>
+                        <addElement tag="$dCFBundleURLSchemesRootArray" name="dCFBundleURLSchemesAppCenterSecret"/>
+
+                        <addElement tag="$dCFBundleURLTypesDict" name="dCFBundleURLSchemesRootArray"/>
+
+                        <addElement tag="$" name="dCFBundleURLTypesDict"/>
+                      </true>
+                    </if>
+
+                    <if condition="isCFBundleURLTypes">
+                      <true>
+                        <setBool result="bCFBundleURLTypesSearchNextElement" value="true"/>
+                      </true>
+                    </if>
+                  </loopElements>
+                </true>
+              </if>
+            </loopElements>
+          </true>
+        </if>
+
+      </true>
+    </if>
+  </iosPListUpdates>
+</root>
