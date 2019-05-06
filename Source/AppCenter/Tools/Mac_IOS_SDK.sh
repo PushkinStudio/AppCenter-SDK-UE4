@@ -17,7 +17,7 @@ validateIncludeGuards()
 	pushd $THIRDPARTY_DIR
 
 	# @todo Use $2 instead
-	SDK_ZIP="AppCenter-SDK-Apple-1.14.0.zip"
+	SDK_ZIP="AppCenter-SDK-Apple-2.0.1.zip"
 	SDK_DIR="AppCenter-SDK-Apple"
 
 	rm -rd $SDK_DIR
