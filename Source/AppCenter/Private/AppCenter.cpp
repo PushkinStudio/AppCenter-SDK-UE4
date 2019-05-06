@@ -57,6 +57,7 @@ void FAppCenterModule::ShutdownModule()
 		// If we're in exit purge, this object has already been destroyed
 		AppCenterSettings->RemoveFromRoot();
 		AppCenterProxy->RemoveFromRoot();
+		AppCenterProxy->ClearFlags(RF_Standalone);
 	}
 	else
 	{
