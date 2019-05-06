@@ -16,7 +16,15 @@ public:
 
 	/** */
 	UPROPERTY(Config, EditAnywhere)
+	bool bEnableAuth;
+
+	/** */
+	UPROPERTY(Config, EditAnywhere)
 	bool bEnableCrashes;
+
+	/** */
+	UPROPERTY(Config, EditAnywhere)
+	bool bEnableData;
 
 	/** */
 	UPROPERTY(Config, EditAnywhere)

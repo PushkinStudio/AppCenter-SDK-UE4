@@ -43,7 +43,9 @@ public class AppCenter : ModuleRules
         // Configure build defines
         bool bAppCenterEnabled = false;
         bool bEnableAnalytics = false;
+        bool bEnableAuth = false;
         bool bEnableCrashes = false;
+        bool bEnableData = false;
         bool bEnableDistribute = false;
         bool bEnablePush = false;
         string AppSecretAndroid = "";
@@ -54,12 +56,14 @@ public class AppCenter : ModuleRules
 
         string SettingsSection = "/Script/AppCenter.AppCenterSettings";
         Ini.GetBool(SettingsSection, "bEnableAnalytics", out bEnableAnalytics);
+        Ini.GetBool(SettingsSection, "bEnableAuth", out bEnableAuth);
         Ini.GetBool(SettingsSection, "bEnableCrashes", out bEnableCrashes);
+        Ini.GetBool(SettingsSection, "bEnableData", out bEnableData);
         Ini.GetBool(SettingsSection, "bEnableDistribute", out bEnableDistribute);
         Ini.GetBool(SettingsSection, "bEnablePush", out bEnablePush);
         Ini.GetString(SettingsSection, "AppSecretAndroid", out AppSecretAndroid);
         Ini.GetString(SettingsSection, "AppSecretIOS", out AppSecretIOS);
-        bool bAnyModuleEnabled = (bEnableAnalytics | bEnableCrashes | bEnableDistribute | bEnablePush);
+        bool bAnyModuleEnabled = (bEnableAnalytics | bEnableAuth | bEnableCrashes | bEnableData | bEnableDistribute | bEnablePush);
 
         if(bAnyModuleEnabled)
         {
@@ -116,12 +120,30 @@ public class AppCenter : ModuleRules
                     );
                 }
 
+                if (bEnableAuth) {
+                    PublicAdditionalFrameworks.Add(
+                        new Framework(
+                            "AppCenterAuth",
+                            "../../ThirdParty/AppCenter-SDK-Apple/iOS/AppCenterAuth.embeddedframework.zip"
+                        )
+                    );
+                }
+
                 if (bEnableCrashes)
                 {
                     PublicAdditionalFrameworks.Add(
                         new Framework(
                             "AppCenterCrashes",
                             "../../ThirdParty/AppCenter-SDK-Apple/iOS/AppCenterCrashes.embeddedframework.zip"
+                        )
+                    );
+                }
+
+                if (bEnableData) {
+                    PublicAdditionalFrameworks.Add(
+                        new Framework(
+                            "AppCenterData",
+                            "../../ThirdParty/AppCenter-SDK-Apple/iOS/AppCenterData.embeddedframework.zip"
                         )
                     );
                 }
@@ -154,7 +176,9 @@ public class AppCenter : ModuleRules
         {
             PublicDefinitions.Add("WITH_APPCENTER=" + (bAnyModuleEnabled ? "1" : "0"));
             PublicDefinitions.Add("WITH_APPCENTER_ANALYTICS=" + (bEnableAnalytics ? "1" : "0"));
+            PublicDefinitions.Add("WITH_APPCENTER_AUTH=" + (bEnableAuth ? "1" : "0"));
             PublicDefinitions.Add("WITH_APPCENTER_CRASHES=" + (bEnableCrashes ? "1" : "0"));
+            PublicDefinitions.Add("WITH_APPCENTER_DATA=" + (bEnableData ? "1" : "0"));
             PublicDefinitions.Add("WITH_APPCENTER_DISTIBUTE=" + (bEnableDistribute ? "1" : "0"));
             PublicDefinitions.Add("WITH_APPCENTER_PUSH=" + (bEnablePush ? "1" : "0"));
         }
@@ -162,7 +186,9 @@ public class AppCenter : ModuleRules
         {
             PublicDefinitions.Add("WITH_APPCENTER=0");
             PublicDefinitions.Add("WITH_APPCENTER_ANALYTICS=0");
+            PublicDefinitions.Add("WITH_APPCENTER_AUTH=0");
             PublicDefinitions.Add("WITH_APPCENTER_CRASHES=0");
+            PublicDefinitions.Add("WITH_APPCENTER_DATA=0");
             PublicDefinitions.Add("WITH_APPCENTER_DISTIBUTE=0");
             PublicDefinitions.Add("WITH_APPCENTER_PUSH=0");
         }
