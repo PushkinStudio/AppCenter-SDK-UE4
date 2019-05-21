@@ -122,8 +122,10 @@ UAppCenter_IOS::UAppCenter_IOS(const FObjectInitializer& ObjectInitializer)
 #if WITH_APPCENTER
 void UAppCenter_IOS::SetUserId(const FString& UserId)
 {
+	FString LocalUserId = UserId;
+
 	dispatch_async(dispatch_get_main_queue(), ^{
-	  [MSAppCenter setUserId:UserId.GetNSString()];
+	  [MSAppCenter setUserId:LocalUserId.GetNSString()];
 	});
 }
 #endif // WITH_APPCENTER
@@ -134,15 +136,18 @@ void UAppCenter_IOS::SetUserId(const FString& UserId)
 #if WITH_APPCENTER_ANALYTICS
 void UAppCenter_IOS::TrackEvent(const FString& EventName, const TMap<FString, FString>& Properties, EAppCenterEventPersistence EventPersistence)
 {
+	const FString LocalEventName = EventName;
+	const TMap<FString, FString> LocalProperties = Properties;
+
 	dispatch_async(dispatch_get_main_queue(), ^{
 	  NSMutableDictionary* PropertiesDictionary = [[[NSMutableDictionary alloc] init] autorelease];
-	  for (const auto& Elem : Properties)
+	  for (const auto& Elem : LocalProperties)
 	  {
 		  [PropertiesDictionary setValue:Elem.Value.GetNSString() forKey:Elem.Key.GetNSString()];
 	  }
 
 	  MSFlags PersistenceFlags = (EventPersistence == EAppCenterEventPersistence::PERSISTENCE_CRITICAL) ? MSFlagsPersistenceCritical : MSFlagsPersistenceNormal;
-	  [MSAnalytics trackEvent:EventName.GetNSString() withProperties:PropertiesDictionary flags:PersistenceFlags];
+	  [MSAnalytics trackEvent:LocalEventName.GetNSString() withProperties:PropertiesDictionary flags:PersistenceFlags];
 	});
 }
 #endif // WITH_APPCENTER_ANALYTICS
@@ -153,7 +158,9 @@ void UAppCenter_IOS::TrackEvent(const FString& EventName, const TMap<FString, FS
 #if WITH_APPCENTER_CRASHES
 void UAppCenter_IOS::GenerateTestCrash()
 {
-	[MSCrashes generateTestCrash];
+	dispatch_async(dispatch_get_main_queue(), ^{
+	  [MSCrashes generateTestCrash];
+	});
 }
 
 void UAppCenter_IOS::GenerateNativeCrash()
