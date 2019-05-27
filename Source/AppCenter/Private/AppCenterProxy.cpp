@@ -86,6 +86,10 @@ void UAppCenterProxy::ClearCustomProperty(const FString& Key)
 void UAppCenterProxy::TrackEvent(const FString& EventName, const TMap<FString, FString>& Properties, EAppCenterEventPersistence EventPersistence)
 {
 	UE_LOG(LogAppCenter, Warning, TEXT("%s: Null proxy used: %s (%d)"), *PS_FUNC_LINE, *EventName, static_cast<int32>(EventPersistence));
+	for (const auto& Elem : Properties)
+	{
+		UE_LOG(LogAppCenter, Warning, TEXT("%s: Key: %s, Value: %s"), *PS_FUNC_LINE, *Elem.Key, *Elem.Value);
+	}
 }
 
 void UAppCenterProxy::PauseAnalytics()

@@ -9,7 +9,7 @@
     <setBoolFromProperty result="bEnableDistribute" ini="Engine" section="/Script/AppCenter.AppCenterSettings" property="bEnableDistribute" default="false"/>
     <setBoolFromProperty result="bEnablePush" ini="Engine" section="/Script/AppCenter.AppCenterSettings" property="bEnablePush" default="false"/>
     <setStringFromProperty result="AppSecret" ini="Engine" section="/Script/AppCenter.AppCenterSettings" property="AppSecretIOS" default=""/>
-    <setStringFromProperty result="SdkVersion" ini="Engine" section="/Script/AppCenter.AppCenterSettings" property="SdkVersion" default="1.11.4"/>
+    <setStringFromProperty result="SdkVersion" ini="Engine" section="/Script/AppCenter.AppCenterSettings" property="SdkVersion" default="2.0.1"/>
     <setBoolFromProperty result="bDebug" ini="Engine" section="/Script/AppCenter.AppCenterSettings" property="bDebug" default="false"/>
 
     <!-- Check that we have any AppCenter SDK enabled -->
@@ -73,6 +73,77 @@
             </true>
           </if>
         </loopElements>
+
+        <if condition="bEnableDistribute">
+          <true>
+            <!-- CFBundleURLTypes -->
+            <loopElements tag="$">
+              <setStringFromTag result="CurrentTag" tag="$"/>
+              <setBoolIsEqual result="isRootDictionary" arg1="$S(CurrentTag)" arg2="dict"/>
+
+              <if condition="isRootDictionary">
+                <true>
+                  <setBool result="bCFBundleURLTypesFound" value="false"/>
+                  <setBool result="bCFBundleURLTypesSearchNextElement" value="false"/>
+
+                  <!-- Check that dict is already exists -->
+                  <loopElements tag="$">
+                    <setStringFromTagText result="TagIteratorValue" tag="$"/>
+                    <setBoolIsEqual result="isCFBundleURLTypes" arg1="$S(TagIteratorValue)" arg2="CFBundleURLTypes"/>
+
+                    <if condition="isCFBundleURLTypes">
+                      <true>
+                        <setBool result="bCFBundleURLTypesFound" value="true"/>
+                      </true>
+                    </if>
+                  </loopElements>
+
+                  <!-- Create dict section if now one found -->
+                  <if condition="bCFBundleURLTypesFound">
+                    <false>
+                      <setElement result="dCFBundleURLTypes" value="key" text="CFBundleURLTypes"/>
+                      <addElement tag="$" name="dCFBundleURLTypes"/>
+                      <setElement result="dCFBundleURLTypesRootArray" value="array"/>
+                      <addElement tag="$" name="dCFBundleURLTypesRootArray"/>
+                    </false>
+                  </if>
+
+                  <!-- Ad AppSecret value to dict array -->
+                  <loopElements tag="$">
+                    <setStringFromTagText result="TagIteratorValue" tag="$"/>
+                    <setBoolIsEqual result="isCFBundleURLTypes" arg1="$S(TagIteratorValue)" arg2="CFBundleURLTypes"/>
+
+                    <if condition="bCFBundleURLTypesSearchNextElement">
+                      <true>
+                        <setBool result="bCFBundleURLTypesSearchNextElement" value="false"/>
+
+                        <setElement result="dCFBundleURLTypesDict" value="dict"/>
+
+                        <setElement result="dCFBundleURLSchemes" value="key" text="CFBundleURLSchemes"/>
+                        <addElement tag="$dCFBundleURLTypesDict" name="dCFBundleURLSchemes"/>
+
+                        <setElement result="dCFBundleURLSchemesRootArray" value="array"/>
+
+                        <setElement result="dCFBundleURLSchemesAppCenterSecret" value="string" text="appcenter-$S(AppSecret)"/>
+                        <addElement tag="$dCFBundleURLSchemesRootArray" name="dCFBundleURLSchemesAppCenterSecret"/>
+
+                        <addElement tag="$dCFBundleURLTypesDict" name="dCFBundleURLSchemesRootArray"/>
+
+                        <addElement tag="$" name="dCFBundleURLTypesDict"/>
+                      </true>
+                    </if>
+
+                    <if condition="isCFBundleURLTypes">
+                      <true>
+                        <setBool result="bCFBundleURLTypesSearchNextElement" value="true"/>
+                      </true>
+                    </if>
+                  </loopElements>
+                </true>
+              </if>
+            </loopElements>
+          </true>
+        </if>
 
       </true>
     </if>
