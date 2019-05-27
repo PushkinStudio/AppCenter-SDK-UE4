@@ -122,7 +122,7 @@ public class AppCenter : ModuleRules
 
                 if (bEnableAuth) {
                     PublicAdditionalFrameworks.Add(
-                        new Framework(
+                        new UEBuildFramework(
                             "AppCenterAuth",
                             "../../ThirdParty/AppCenter-SDK-Apple/iOS/AppCenterAuth.embeddedframework.zip"
                         )
@@ -141,7 +141,7 @@ public class AppCenter : ModuleRules
 
                 if (bEnableData) {
                     PublicAdditionalFrameworks.Add(
-                        new Framework(
+                        new UEBuildFramework(
                             "AppCenterData",
                             "../../ThirdParty/AppCenter-SDK-Apple/iOS/AppCenterData.embeddedframework.zip"
                         )
