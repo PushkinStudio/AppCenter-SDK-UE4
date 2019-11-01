@@ -6,9 +6,7 @@ Development repository for the App Center SDK for Unreal Engine 4 platforms
 
 ## JFYI
 
-Plugin is in active development stage for now, so there are few things you should know.
-
-Modules implemented:
+Plugin is in active development stage and being used on prod in a few project (e.g. [Armored Warfare: Assault](http://awa.my.com/)). It's well tested and double-checked, but as its primary target is limited to our own games only selected features are implemented.
 
 * Analytics (basic integration and events traking)
 * Crashes
