@@ -1,4 +1,7 @@
 # AppCenter-SDK-UE4
+
+[![statusIcon](https://teamcity.ufna.dev/app/rest/builds/buildType:(id:Pushkin_AppCenterSdkUe4_ClangFormatCheck)/statusIcon.svg)](https://teamcity.ufna.dev/viewType.html?buildTypeId=Pushkin_AppCenterSdkUe4_ClangFormatCheck&guest=1)
+
 Development repository for the App Center SDK for Unreal Engine 4 platforms
 
 ## JFYI
