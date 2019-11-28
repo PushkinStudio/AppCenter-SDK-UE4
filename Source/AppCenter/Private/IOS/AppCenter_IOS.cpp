@@ -146,7 +146,7 @@ void UAppCenter_IOS::TrackEvent(const FString& EventName, const TMap<FString, FS
 		  [PropertiesDictionary setValue:Elem.Value.GetNSString() forKey:Elem.Key.GetNSString()];
 	  }
 
-	  MSFlags PersistenceFlags = (EventPersistence == EAppCenterEventPersistence::PERSISTENCE_CRITICAL) ? MSFlagsPersistenceCritical : MSFlagsPersistenceNormal;
+	  MSFlags PersistenceFlags = (EventPersistence == EAppCenterEventPersistence::PERSISTENCE_CRITICAL) ? MSFlagsCritical : MSFlagsNormal;
 	  [MSAnalytics trackEvent:LocalEventName.GetNSString() withProperties:PropertiesDictionary flags:PersistenceFlags];
 	});
 }
