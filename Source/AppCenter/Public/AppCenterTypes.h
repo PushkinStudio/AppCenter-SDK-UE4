@@ -12,6 +12,8 @@
 UENUM(BlueprintType)
 enum class EAppCenterLogLevel : uint8
 {
+	/** Default value */
+	INVALID = 0,
 	/** Only critical errors will be logged */
 	ASSERT = 7,
 	/** Debug information will be logged */
@@ -39,6 +41,8 @@ enum class EAppCenterLogLevel : uint8
 UENUM(BlueprintType)
 enum class EAppCenterEventPersistence : uint8
 {
+	/** Default value */
+	INVALID = 0,
 	/** Normal */
 	PERSISTENCE_NORMAL = 1,
 	/** Critical */
