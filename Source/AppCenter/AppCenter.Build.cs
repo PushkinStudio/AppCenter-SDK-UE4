@@ -65,7 +65,7 @@ public class AppCenter : ModuleRules
         Ini.GetString(SettingsSection, "AppSecretIOS", out AppSecretIOS);
         bool bAnyModuleEnabled = (bEnableAnalytics | bEnableAuth | bEnableCrashes | bEnableData | bEnableDistribute | bEnablePush);
 
-        if(bAnyModuleEnabled)
+        if (bAnyModuleEnabled)
         {
             if (Target.Platform == UnrealTargetPlatform.Android && AppSecretAndroid != "")
             {
@@ -89,9 +89,8 @@ public class AppCenter : ModuleRules
                     string ThirdPartyPath = Path.Combine(ModuleDirectory, "..", "ThirdParty");
                     PublicIncludePaths.Add(Path.Combine(ThirdPartyPath, "Breakpad", "src"));
 
-                    PublicLibraryPaths.Add(Path.Combine(ThirdPartyPath, "Breakpad", "lib", "armeabi-v7a"));
-                    PublicLibraryPaths.Add(Path.Combine(ThirdPartyPath, "Breakpad", "lib", "arm64-v8a"));
-                    PublicAdditionalLibraries.Add("breakpad_client");
+                    PublicAdditionalLibraries.Add(Path.Combine(ThirdPartyPath, "Breakpad", "lib", "armeabi-v7a", "libbreakpad_client.a"));
+                    PublicAdditionalLibraries.Add(Path.Combine(ThirdPartyPath, "Breakpad", "lib", "arm64-v8a", "libbreakpad_client.a"));
                 }
             }
             else if (Target.Platform == UnrealTargetPlatform.IOS && AppSecretIOS != "")
