@@ -14,7 +14,7 @@ UAppCenterProxy::UAppCenterProxy(const FObjectInitializer& ObjectInitializer)
 
 void UAppCenterProxy::SetLogLevel(EAppCenterLogLevel InLogLevel)
 {
-	UE_LOG(LogAppCenter, Warning, TEXT("%s: Null proxy used: %d"), *PS_FUNC_LINE, static_cast<int32>(InLogLevel));
+	UE_LOG(LogAppCenter, Verbose, TEXT("%s: Null proxy used: %d"), *PS_FUNC_LINE, static_cast<int32>(InLogLevel));
 }
 
 FString UAppCenterProxy::GetInstallId()
@@ -25,7 +25,7 @@ FString UAppCenterProxy::GetInstallId()
 
 void UAppCenterProxy::SetUserId(const FString& UserId)
 {
-	UE_LOG(LogAppCenter, Warning, TEXT("%s: Not implemented yet: %s"), *PS_FUNC_LINE, *UserId);
+	UE_LOG(LogAppCenter, Verbose, TEXT("%s: Null proxy used: %s"), *PS_FUNC_LINE, *UserId);
 }
 
 void UAppCenterProxy::SetEnabled(bool bEnabled)
@@ -52,32 +52,32 @@ void UAppCenterProxy::SetCustomProperties(const FString& CustomPropertiesJson)
 
 void UAppCenterProxy::SetCustomPropertyAsString(const FString& Key, const FString& Value)
 {
-	UE_LOG(LogAppCenter, Warning, TEXT("%s: Null proxy used"), *PS_FUNC_LINE);
+	UE_LOG(LogAppCenter, Verbose, TEXT("%s: Null proxy used"), *PS_FUNC_LINE);
 }
 
 void UAppCenterProxy::SetCustomPropertyAsInt(const FString& Key, int32 Value)
 {
-	UE_LOG(LogAppCenter, Warning, TEXT("%s: Null proxy used"), *PS_FUNC_LINE);
+	UE_LOG(LogAppCenter, Verbose, TEXT("%s: Null proxy used"), *PS_FUNC_LINE);
 }
 
 void UAppCenterProxy::SetCustomPropertyAsFloat(const FString& Key, float Value)
 {
-	UE_LOG(LogAppCenter, Warning, TEXT("%s: Null proxy used"), *PS_FUNC_LINE);
+	UE_LOG(LogAppCenter, Verbose, TEXT("%s: Null proxy used"), *PS_FUNC_LINE);
 }
 
 void UAppCenterProxy::SetCustomPropertyAsBool(const FString& Key, bool Value)
 {
-	UE_LOG(LogAppCenter, Warning, TEXT("%s: Null proxy used"), *PS_FUNC_LINE);
+	UE_LOG(LogAppCenter, Verbose, TEXT("%s: Null proxy used"), *PS_FUNC_LINE);
 }
 
 void UAppCenterProxy::ClearCustomProperties(const TArray<FString>& Keys)
 {
-	UE_LOG(LogAppCenter, Warning, TEXT("%s: Null proxy used"), *PS_FUNC_LINE);
+	UE_LOG(LogAppCenter, Verbose, TEXT("%s: Null proxy used"), *PS_FUNC_LINE);
 }
 
 void UAppCenterProxy::ClearCustomProperty(const FString& Key)
 {
-	UE_LOG(LogAppCenter, Warning, TEXT("%s: Null proxy used"), *PS_FUNC_LINE);
+	UE_LOG(LogAppCenter, Verbose, TEXT("%s: Null proxy used"), *PS_FUNC_LINE);
 }
 
 /////////////////////////////////////////////////////////////////////////
@@ -85,10 +85,10 @@ void UAppCenterProxy::ClearCustomProperty(const FString& Key)
 
 void UAppCenterProxy::TrackEvent(const FString& EventName, const TMap<FString, FString>& Properties, EAppCenterEventPersistence EventPersistence)
 {
-	UE_LOG(LogAppCenter, Warning, TEXT("%s: Null proxy used: %s (%d)"), *PS_FUNC_LINE, *EventName, static_cast<int32>(EventPersistence));
+	UE_LOG(LogAppCenter, Verbose, TEXT("%s: Null proxy used: %s (%d)"), *PS_FUNC_LINE, *EventName, static_cast<int32>(EventPersistence));
 	for (const auto& Elem : Properties)
 	{
-		UE_LOG(LogAppCenter, Warning, TEXT("%s: Key: %s, Value: %s"), *PS_FUNC_LINE, *Elem.Key, *Elem.Value);
+		UE_LOG(LogAppCenter, Verbose, TEXT("%s: Key: %s, Value: %s"), *PS_FUNC_LINE, *Elem.Key, *Elem.Value);
 	}
 }
 
@@ -118,17 +118,17 @@ bool UAppCenterProxy::IsAnalyticsEnabled()
 
 void UAppCenterProxy::GenerateTestCrash()
 {
-	UE_LOG(LogAppCenter, Warning, TEXT("%s: Null proxy used"), *PS_FUNC_LINE);
+	UE_LOG(LogAppCenter, Verbose, TEXT("%s: Null proxy used"), *PS_FUNC_LINE);
 }
 
 void UAppCenterProxy::GenerateNativeCrash()
 {
-	UE_LOG(LogAppCenter, Warning, TEXT("%s: Null proxy used"), *PS_FUNC_LINE);
+	UE_LOG(LogAppCenter, Verbose, TEXT("%s: Null proxy used"), *PS_FUNC_LINE);
 }
 
 bool UAppCenterProxy::HasCrashedInLastSession()
 {
-	UE_LOG(LogAppCenter, Warning, TEXT("%s: Null proxy used"), *PS_FUNC_LINE);
+	UE_LOG(LogAppCenter, Verbose, TEXT("%s: Null proxy used"), *PS_FUNC_LINE);
 	return false;
 }
 
