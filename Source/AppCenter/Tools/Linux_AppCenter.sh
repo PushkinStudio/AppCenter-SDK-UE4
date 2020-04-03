@@ -31,8 +31,8 @@ packSharedObjects()
 	echo "Dump the symbols using the Breakpad toolchain as described in the https://chromium.googlesource.com/breakpad/breakpad/+/master/README.ANDROID#93"
 
 	# There two paths we need to process
-	JNI_DIR=APK/jni/$ARCH
-	LIBS_DIR=APK/libs/$ARCH
+	JNI_DIR=APK/gradle/app/src/main/jniLibs/$ARCH
+	LIBS_DIR=APK/gradle/app/src/main/libs/$ARCH
 
 	find $JNI_DIR $LIBS_DIR -name '*.so' | while read so_file; do
 		echo "Processing file '$so_file'"
