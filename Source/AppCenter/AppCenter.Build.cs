@@ -57,7 +57,8 @@ public class AppCenter : ModuleRules
         string SettingsSection = "/Script/AppCenter.AppCenterSettings";
         Ini.GetBool(SettingsSection, "bEnableAnalytics", out bEnableAnalytics);
         Ini.GetBool(SettingsSection, "bEnableAuth", out bEnableAuth);
-        Ini.GetBool(SettingsSection, "bEnableCrashes", out bEnableCrashes);
+        // Crashes are disabled for UE 4.25, cause breakpad is outdated
+        // Ini.GetBool(SettingsSection, "bEnableCrashes", out bEnableCrashes);
         Ini.GetBool(SettingsSection, "bEnableData", out bEnableData);
         Ini.GetBool(SettingsSection, "bEnableDistribute", out bEnableDistribute);
         Ini.GetBool(SettingsSection, "bEnablePush", out bEnablePush);
