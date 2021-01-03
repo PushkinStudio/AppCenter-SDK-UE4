@@ -3,6 +3,7 @@
 #include "AppCenterLibrary.h"
 
 #include "AppCenter.h"
+#include "AppCenterProxy.h"
 
 UAppCenterLibrary::UAppCenterLibrary(const FObjectInitializer& ObjectInitializer)
 	: Super(ObjectInitializer)

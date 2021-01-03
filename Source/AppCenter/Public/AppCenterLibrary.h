@@ -6,6 +6,8 @@
 
 #include "AppCenterLibrary.generated.h"
 
+class UAppCenterProxy;
+
 UCLASS()
 class APPCENTER_API UAppCenterLibrary : public UBlueprintFunctionLibrary
 {
